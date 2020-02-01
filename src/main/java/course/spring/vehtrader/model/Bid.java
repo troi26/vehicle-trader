@@ -10,9 +10,34 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("bids")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class Bid {
     @Id
     private String id;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
