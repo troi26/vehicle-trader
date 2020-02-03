@@ -24,8 +24,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
         org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
 )
 
-// Ако ЗАКОМЕНТИРАМЕ следващите два реда @EnabledWebSecurity
-// и @EnableGlobalMethodSecurity(...), ще се изключи конфигурацията, която сме дефинирали по - долу
+// Ако ЗАКОМЕНТИРАМЕ реда @EnabledWebSecurity
+// ще се изключи конфигурацията, която сме дефинирали по - долу
 // Така че за да НЯМА секюрити горанта анотация:
 // @SpringBootApplication -> трябва да НЕ е закоментирана, а тази по-долу:
 // @EnabledWebSecurity -> закоментира
