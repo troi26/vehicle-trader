@@ -1,8 +1,10 @@
 package course.spring.vehtrader.repo;
 
 import course.spring.vehtrader.model.User;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UsersRepository extends ReactiveMongoRepository<User, String> {
-    
+import java.util.Optional;
+
+public interface UsersRepository extends MongoRepository<User, String> {
+    Optional<User> findByUsername(String email);
 }

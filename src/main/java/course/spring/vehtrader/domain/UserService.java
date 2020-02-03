@@ -1,14 +1,15 @@
 package course.spring.vehtrader.domain;
 
 import course.spring.vehtrader.model.User;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public interface UserService {
-    Flux<User> findAll();
-    Mono<User> findById(String id);
-    Mono<User> create(User user);
-    Mono<User> update(User user);
-    Mono<User> delete(String id);
-    Mono<Long> getCount();
+    List<User> findAll();
+    User findById(String id);
+    User findByUsername(String username);
+    User create(User user);
+    User update(User user);
+    User delete(String id);
+    Long getCount();
 }
