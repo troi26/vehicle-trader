@@ -1,7 +1,6 @@
 package course.spring.vehtrader.web.chat;
 
 import course.spring.vehtrader.domain.chat.ChatConversationService;
-import course.spring.vehtrader.exceptions.InvalidEntityException;
 import course.spring.vehtrader.model.chat.ChatConversation;
 import course.spring.vehtrader.model.chat.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +21,26 @@ public class ChatConversationController {
     }
 
     @GetMapping("{id}")
-    public Mono<ChatConversation> getChatConversationId(@PathVariable String id) {
+    public Mono<ChatConversation> getChatConversationById(@PathVariable String id) {
         return chatConversationService.findById(id);
     }
+
     @GetMapping("/user/{userId}")
     public Flux<ChatConversation> getChatConversationByUserId(@PathVariable String userId) {
         return chatConversationService.getByUserId(userId);
     }
 
     @PostMapping
-    public Mono<ChatConversation> insertChatConversation(@RequestBody ChatConversation chatConversation){
+    public Mono<ChatConversation> insertChatConversation(@RequestBody ChatConversation chatConversation) {
         return chatConversationService.create(chatConversation);
     }
 
     @PostMapping("{id}")
-    public Mono<ChatConversation> insertMessageIntoConversation(@PathVariable String id, @RequestBody Message message){
+    public Mono<ChatConversation> insertMessageIntoConversation(@PathVariable String id, @RequestBody Message message) {
         Mono<ChatConversation> chatConversationMono = chatConversationService.findById(id);
-        return chatConversationMono.flatMap(converstaion -> {
-            converstaion.getMessageHistory().add(message);
-            return Mono.just(converstaion);
+        return chatConversationMono.flatMap(conversation -> {
+            conversation.getMessageHistory().add(message);
+            return Mono.just(conversation);
         }).flatMap(chatConversationService::update);
     }
 
@@ -56,7 +56,7 @@ public class ChatConversationController {
 //    }
 
     @DeleteMapping("{id}")
-    public Mono<ChatConversation> deleteChatConversation(@PathVariable String id){
+    public Mono<ChatConversation> deleteChatConversation(@PathVariable String id) {
         return chatConversationService.delete(id);
     }
 }

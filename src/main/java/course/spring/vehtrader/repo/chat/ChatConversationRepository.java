@@ -6,5 +6,6 @@ import reactor.core.publisher.Flux;
 
 public interface ChatConversationRepository extends ReactiveMongoRepository<ChatConversation, String> {
     Flux<ChatConversation> findByUser1Id(String id);
+
     Flux<ChatConversation> findByUser2Id(String id);
 }

@@ -6,10 +6,16 @@ import reactor.core.publisher.Mono;
 
 public interface ChatConversationService {
     Flux<ChatConversation> findAll();
+
     Mono<ChatConversation> findById(String id);
+
     Mono<ChatConversation> create(ChatConversation chatConversation);
+
     Mono<ChatConversation> update(ChatConversation chatConversation);
+
     Mono<ChatConversation> delete(String id);
+
     Flux<ChatConversation> getByUserId(String userId);
+
     Mono<Long> getCount();
 }

@@ -13,6 +13,7 @@ public class ChatConversationServiceImpl implements ChatConversationService {
 
     @Autowired
     ChatConversationRepository chatConversationRepository;
+
     @Override
     public Flux<ChatConversation> findAll() {
         return chatConversationRepository.findAll();
