@@ -27,6 +27,8 @@ public class Message {
     @Size(min = 1)
     String message;
 
+    @NonNull
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime messageDateTime;
 }
