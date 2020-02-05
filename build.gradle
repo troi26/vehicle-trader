@@ -2,11 +2,34 @@ plugins {
     id 'org.springframework.boot' version '2.2.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
+    id "com.moowork.node" version "1.3.1"
 }
 
 group = 'course.spring'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+task appNpmInstall(type: NpmTask) {
+    description = "Installs all dependencies from package.json"
+    workingDir = file("src/main/webapp")
+    args = ["install"]
+}
+
+task appNpmBuild(type: NpmTask) {
+    description = "Builds production version of the webapp"
+    workingDir = file("src/main/webapp")
+    args = ["run", "build"]
+}
+
+task copyWebAppJS(type: Copy) {
+    from 'src/main/webapp/build/static/js'
+    into 'src/main/resources/static/js'
+}
+
+task copyWebAppCSS(type: Copy) {
+    from 'src/main/webapp/build/static/css'
+    into 'src/main/resources/static/css'
+}
 
 configurations {
     developmentOnly
@@ -24,8 +47,10 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.2.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     compileOnly 'org.projectlombok:lombok'

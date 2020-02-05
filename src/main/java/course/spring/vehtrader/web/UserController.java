@@ -10,6 +10,8 @@ import org.springframework.web.servlet.function.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,22 +20,27 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public Flux<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.findAll();
     }
 
+    @GetMapping("{username}")
+    public User getUserByUsername(String username) {
+        return userService.findByUsername(username);
+    }
+
     @GetMapping("{id}")
-    public Mono<User> getUserBydId(@PathVariable String id) {
+    public User getUserBydId(@PathVariable String id) {
         return userService.findById(id);
     }
 
     @PostMapping
-    public Mono<User> insertUser(@RequestBody User user){
+    public User insertUser(@RequestBody User user){
         return userService.create(user);
     }
 
     @PutMapping("{id}")
-    public Mono<User> updateUser(@PathVariable String id, @RequestBody User user){
+    public User updateUser(@PathVariable String id, @RequestBody User user){
         if(!id.equals(user.getId())) {
             throw new InvalidEntityException(
                     String.format("User ID='%s' is different from URL resource ID='%s'", user.getId(), id));
@@ -42,7 +49,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public Mono<User> deleteUser(@PathVariable String id){
+    public User deleteUser(@PathVariable String id){
         return userService.delete(id);
     }
 }
