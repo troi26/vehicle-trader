@@ -44,6 +44,13 @@ public class ChatConversationServiceImpl implements ChatConversationService {
     }
 
     @Override
+    public Flux<ChatConversation> getByUserId(String userId) {
+        Flux<ChatConversation> chatUser1 = chatConversationRepository.findByUser1Id(userId);
+        Flux<ChatConversation> chatUser2 = chatConversationRepository.findByUser2Id(userId);
+        return Flux.concat(chatUser1, chatUser2).switchIfEmpty(Flux.error(new NonExistingEntityException(String.format("ChatConversation with userID: %s involved does not exist.", userId))));
+    }
+
+    @Override
     public Mono<Long> getCount() {
         return chatConversationRepository.count();
     }
