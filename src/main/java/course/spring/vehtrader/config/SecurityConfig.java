@@ -13,6 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 
@@ -38,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure (HttpSecurity http) throws Exception {
         http
+                .cors().and() // Comment this line to disable cors (Cross Origin Requests)
                 .csrf().disable()
                 .exceptionHandling()
                 .and()
@@ -46,10 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/swagger*/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/bids/**", "/api/users/**").authenticated()//.authenticated()
-                .antMatchers(HttpMethod.POST, "/**").authenticated()//.hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers(HttpMethod.PUT).authenticated()//.hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers(HttpMethod.DELETE).authenticated()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/bids/**", "/api/users/**", "/**").permitAll()//.authenticated()
+                .antMatchers(HttpMethod.POST, "/**", "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers(HttpMethod.PUT, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers("/index.html", "/", "/home", "/login", "/user").permitAll()
                 .and()
                 .formLogin()
                 .permitAll()
@@ -74,5 +81,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
 
     }
+
+
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+//        return source;
+//    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+//        configuration.addAllowedOrigin("localhost:3000");
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "OPTIONS", "PUT"));
+        System.out.println(configuration.getAllowedOrigins());
+        System.out.println(configuration.getAllowedMethods());
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource()
+//    {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedOrigin("https://localhost:3000");
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "OPTIONS", "PUT"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 }
