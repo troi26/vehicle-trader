@@ -30,7 +30,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 // @SpringBootApplication -> трябва да НЕ е закоментирана, а тази по-долу:
 // @EnabledWebSecurity -> закоментира
 
-@EnableWebSecurity
+//@EnableWebSecurity
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

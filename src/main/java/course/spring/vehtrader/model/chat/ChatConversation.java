@@ -4,9 +4,11 @@ import course.spring.vehtrader.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Document("chat_conversations")
@@ -16,7 +18,14 @@ import java.util.List;
 public class ChatConversation {
     @Id
     String id;
+
+    @NonNull
+    @NotNull
     User user1;
+
+    @NonNull
+    @NotNull
     User user2;
+
     List<Message> messageHistory;
 }
