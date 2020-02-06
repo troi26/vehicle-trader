@@ -9,25 +9,30 @@ group = 'course.spring'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+
+// Run this to install all your dependencies from package.json
 task appNpmInstall(type: NpmTask) {
     description = "Installs all dependencies from package.json"
     workingDir = file("src/main/webapp")
     args = ["install"]
 }
 
+// Run this to transpile react code to a single bundle file, located in dist/js webapp directory
 task appNpmBuild(type: NpmTask) {
     description = "Builds production version of the webapp"
     workingDir = file("src/main/webapp")
     args = ["run", "build"]
 }
 
+// Run this to copy your react app bundle to the static/js directory
 task copyWebAppJS(type: Copy) {
-    from 'src/main/webapp/build/static/js'
+    from 'src/main/webapp/dist/js'
     into 'src/main/resources/static/js'
 }
 
+// Run this to copy your react stylesheets from src/css webapp directory to the static/css directory
 task copyWebAppCSS(type: Copy) {
-    from 'src/main/webapp/build/static/css'
+    from 'src/main/webapp/src/css'
     into 'src/main/resources/static/css'
 }
 
@@ -49,7 +54,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.2.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-    compile('org.springframework.boot:spring-boot-starter-webflux')
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
