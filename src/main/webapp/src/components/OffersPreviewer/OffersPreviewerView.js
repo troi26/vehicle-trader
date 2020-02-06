@@ -10,6 +10,7 @@ export const OffersPreviewerView = (props) => {
         >
 
             <Table striped>
+                <caption>Offers</caption>
                 <thead className="thead-dark">
                 <tr>
                     <th>#</th>
@@ -23,6 +24,11 @@ export const OffersPreviewerView = (props) => {
                     <th>Electric mirrors</th>
                     <th>Horse power</th>
                     <th>Photo</th>
+                    <th>Starting price</th>
+                    <th>Transmission type</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Manufactured Year</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,6 +47,11 @@ export const OffersPreviewerView = (props) => {
                         <td>{offer.electronicMirrors ? "included" : "excluded"}</td>
                         <td>{offer.horsePower < 0 ? "N/A" : offer.horsePower}</td>
                         <td>{!offer.photoUrl ? "N/A" : offer.photoUrl}</td>
+                        <td>{!offer.startingPrice ? "N/A" : offer.startingPrice}</td>
+                        <td>{!offer.transmissionType ? "N/A" : offer.transmissionType}</td>
+                        <td>{!offer.brand ? "N/A" : offer.brand}</td>
+                        <td>{!offer.model ? "N/A" : offer.model}</td>
+                        <td>{!offer.manufactured ? "N/A" : offer.manufactured}</td>
                     </tr>)
                 }
                 </tbody>
