@@ -1,6 +1,6 @@
 package course.spring.vehtrader.config;
 
-import course.spring.vehtrader.domain.UserService;
+import course.spring.vehtrader.domain.UsersService;
 import course.spring.vehtrader.exceptions.NonExistingEntityException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,15 +18,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-@Configuration
 
 // Наличието на тази анотация изключва автоматичната секюрити конфигурация,
 // тоест за да има такава трябва да си дефинираме ние, както сме направили в класа по - долу.
 
-@SpringBootApplication(exclude = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
-)
+//@SpringBootApplication(exclude = {
+//        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+//        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
+//)
 
 // Ако ЗАКОМЕНТИРАМЕ реда @EnabledWebSecurity
 // ще се изключи конфигурацията, която сме дефинирали по - долу
@@ -34,6 +33,7 @@ import java.util.Arrays;
 // @SpringBootApplication -> трябва да НЕ е закоментирана, а тази по-долу:
 // @EnabledWebSecurity -> закоментира
 
+//@Configuration
 @EnableWebSecurity
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -52,13 +52,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/swagger*/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/bids/**", "/api/users/**", "/**").permitAll()//.authenticated()
-                .antMatchers(HttpMethod.POST, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers(HttpMethod.PUT, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
-                .antMatchers("/index.html", "/", "/home", "/login", "/user").permitAll()
+                .antMatchers(HttpMethod.GET, "/", "/api/bids/**", "/api/users/**").authenticated()//.authenticated()
+                .antMatchers(HttpMethod.POST).authenticated()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers(HttpMethod.PUT).authenticated()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE).authenticated()//.hasAnyRole("BLOGGER", "ADMIN")
+                // За да се тества в реално време промените с реакт с "npm start" скрипта, трябва да се
+                // ЗАКОМЕНТИРАТ предишните 4 реда, които искат да си аутентикиран за достъп до руутовете
+                // и да се РАЗКОМЕНТИРАТ следващите 4 реда, където всичко се позволява.
+//                .antMatchers(HttpMethod.GET, "/api/bids/**", "/api/users/**", "/**").permitAll()//.authenticated()
+//                .antMatchers(HttpMethod.POST, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+//                .antMatchers("/index", "/", "/home", "/login", "/user").permitAll()
                 .and()
                 .formLogin()
+//                .defaultSuccessUrl("/", true)
                 .permitAll()
                 .and()
                 .logout()
@@ -69,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserService usersService) {
+    public UserDetailsService userDetailsService(UsersService usersService) {
 
         return username -> {
             try {
