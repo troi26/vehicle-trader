@@ -1,5 +1,7 @@
 package course.spring.vehtrader.model;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import course.spring.vehtrader.enums.Transmission;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Id;
@@ -22,7 +24,10 @@ public class Offer {
     private String userId;
     @NotNull
     @NonNull
-    private double minCash;
+    private double startingPrice;
+
+    // If the vehicle is user or a new on
+    private boolean usedStatus = false;
 
     private LocalDateTime created_at = LocalDateTime.now();
     private LocalDateTime modified_at = LocalDateTime.now();
@@ -30,6 +35,8 @@ public class Offer {
     private String photoUrl;
 
     private String engineType;
+    @JsonEnumDefaultValue
+    private Transmission transmissionType = Transmission.MANUAL;
     private int kmRun = -1;
     private LocalDateTime manufactured;
     private String brand;
