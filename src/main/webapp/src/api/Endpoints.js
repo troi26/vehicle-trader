@@ -1,6 +1,7 @@
 // Bids endpoints
 export const BIDS = {
     GET_BIDS_OF_OFFER: "http://localhost:8080/api/bids/stream",
+    POST_BIDS_OF_OFFER: "http://localhost:8080/api/bids/save",
 };
 
 // Offers endpoints
