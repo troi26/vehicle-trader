@@ -45,6 +45,9 @@ public class User implements UserDetails {
     private String email;
     @NonNull
     @NotNull
+    private double cashAmount;
+    @NonNull
+    @NotNull
     @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$&%]).{5,16})")
     @JsonProperty(access = WRITE_ONLY)
     private String password;

@@ -25,12 +25,12 @@ public class UserController {
     }
 
     @GetMapping("{username}")
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(@PathVariable("username") String username) {
         return userService.findByUsername(username);
     }
 
     @GetMapping("{id}")
-    public User getUserBydId(@PathVariable String id) {
+    public User getUserBydId(@PathVariable("id") String id) {
         return userService.findById(id);
     }
 
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public User updateUser(@PathVariable String id, @RequestBody User user){
+    public User updateUser(@PathVariable("id") String id, @RequestBody User user){
         if(!id.equals(user.getId())) {
             throw new InvalidEntityException(
                     String.format("User ID='%s' is different from URL resource ID='%s'", user.getId(), id));
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public User deleteUser(@PathVariable String id){
+    public User deleteUser(@PathVariable("id") String id){
         return userService.delete(id);
     }
 }

@@ -27,7 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(String id) {
-        return usersRepository.findById(id).orElseThrow();
+        return usersRepository.findById(id).orElseThrow(() -> new NonExistingEntityException(
+                String.format("User with id='%s' does not exist.", id)));
     }
 
     @Override
