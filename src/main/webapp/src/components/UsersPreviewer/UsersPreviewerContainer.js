@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { UsersPreviewerView } from './UsersPreviewerView';
 
+import { UsersPreviewerView } from './UsersPreviewerView';
 import { getAllUsers } from '../../api/UsersFetchAPI';
-import {getAuthenticatedUser} from "../../api/SecurityFetchAPI";
 
 export class UsersPreviewerContainer extends Component {
     constructor (props) {
@@ -42,8 +41,7 @@ export class UsersPreviewerContainer extends Component {
             <UsersPreviewerView
                 {...this.state}
                style={{
-                   width: '100%',
-                   height: '100%',
+                   ...this.props.style,
                }}
             />
         );

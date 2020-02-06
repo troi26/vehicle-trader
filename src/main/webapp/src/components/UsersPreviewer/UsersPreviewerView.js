@@ -1,14 +1,17 @@
 import React from 'react';
-import {Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Table} from "reactstrap";
+import { Table } from "reactstrap";
 
 export const UsersPreviewerView = (props) => {
     console.log(props.users);
 
     return (
-        <div>
+        <div
+            style={props.style}
+        >
 
             <Table striped>
-                <thead>
+                <caption>Users</caption>
+                <thead className="thead-dark">
                 <tr>
                     <th>#</th>
                     <th>First Name</th>
@@ -22,7 +25,7 @@ export const UsersPreviewerView = (props) => {
                     <tr
                         key={`user-row-${user.id}`}
                     >
-                        <th scope="row">${idx + 1}</th>
+                        <th scope="row">{idx + 1}</th>
                         <td>{user.name}</td>
                         <td>{user.surname}</td>
                         <td>{user.username}</td>
