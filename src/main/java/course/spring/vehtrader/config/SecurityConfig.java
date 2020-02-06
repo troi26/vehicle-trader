@@ -2,7 +2,6 @@ package course.spring.vehtrader.config;
 
 import course.spring.vehtrader.domain.UserService;
 import course.spring.vehtrader.exceptions.NonExistingEntityException;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().and() // Comment this line to disable cors (Cross Origin Requests)
                 .csrf().disable()
+//                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
                 .exceptionHandling()
                 .and()
                 .authorizeRequests()
@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/swagger*/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/bids/**", "/api/users/**", "/**").permitAll()//.authenticated()
-                .antMatchers(HttpMethod.POST, "/**", "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
                 .antMatchers(HttpMethod.PUT, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/**").permitAll()//.hasAnyRole("BLOGGER", "ADMIN")
                 .antMatchers("/index.html", "/", "/home", "/login", "/user").permitAll()
@@ -90,18 +90,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return source;
 //    }
 
+
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-//        configuration.addAllowedOrigin("localhost:3000");
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "OPTIONS", "PUT"));
-        System.out.println(configuration.getAllowedOrigins());
-        System.out.println(configuration.getAllowedMethods());
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+////        configuration.addAllowedOrigin("localhost:3000");
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "OPTIONS", "PUT"));
+//        System.out.println(configuration.getAllowedOrigins());
+//        System.out.println(configuration.getAllowedMethods());
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 //    @Bean
 //    CorsConfigurationSource corsConfigurationSource()
