@@ -5,7 +5,6 @@ import course.spring.vehtrader.exceptions.NonExistingEntityException;
 import course.spring.vehtrader.model.User;
 import course.spring.vehtrader.repo.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UsersServiceImpl implements UsersService {
 
     @Autowired
     UsersRepository usersRepository;

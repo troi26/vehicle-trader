@@ -4,7 +4,7 @@ import course.spring.vehtrader.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UsersService {
     List<User> findAll();
     User findById(String id);
     User findByUsername(String username);
