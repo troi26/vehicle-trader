@@ -9,9 +9,11 @@ export const BidsPreviewerView = (props) => {
 		>
 
 			<Table striped>
+				<caption>Bids</caption>
 				<thead className="thead-dark">
 				<tr>
 					<th>#</th>
+					<th>Bid ID</th>
 					<th>Offer ID</th>
 					<th>User ID</th>
 					<th>Submitted At</th>
@@ -25,6 +27,7 @@ export const BidsPreviewerView = (props) => {
 						key={`bid-row-${bid.id}`}
 					>
 						<th scope="row">{idx + 1}</th>
+						<td>{bid.id}</td>
 						<td>{bid.offerId}</td>
 						<td>{bid.userId}</td>
 						<td>{bid.created_at}</td>
