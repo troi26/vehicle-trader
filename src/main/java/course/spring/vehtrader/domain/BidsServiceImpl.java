@@ -5,8 +5,13 @@ import course.spring.vehtrader.model.Bid;
 import course.spring.vehtrader.repo.BidsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.function.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
 @Service
 public class BidsServiceImpl implements BidsService {
@@ -26,21 +31,26 @@ public class BidsServiceImpl implements BidsService {
     }
 
     @Override
-    public Mono<Bid> create(Bid article) {
-        return repo.insert(article);
+    public Flux<Bid> findAllByOfferId(String id) {
+        return repo.findAllByOfferId(id);
     }
 
     @Override
-    public Mono<Bid> update(Bid article) {
-        return repo.save(article);
+    public Mono<Bid> create(Bid bid) {
+        return repo.insert(bid);
     }
 
     @Override
-    public Mono<Bid> delete(String articleId) {
-        return repo.findById(articleId)
-                .flatMap(art -> repo.deleteById(articleId).thenReturn(art))
+    public Mono<Bid> update(Bid bid) {
+        return repo.save(bid);
+    }
+
+    @Override
+    public Mono<Bid> delete(String bidId) {
+        return repo.findById(bidId)
+                .flatMap(art -> repo.deleteById(bidId).thenReturn(art))
                 .switchIfEmpty(Mono.error(new NonExistingEntityException(
-                        String.format("Bid with ID:%s does not exist.", articleId))));
+                        String.format("Bid with ID:%s does not exist.", bidId))));
     }
 
     @Override
