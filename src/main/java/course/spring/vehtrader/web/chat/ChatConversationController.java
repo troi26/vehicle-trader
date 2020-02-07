@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/chat")
 public class ChatConversationController {
@@ -36,7 +38,7 @@ public class ChatConversationController {
     }
 
     @PostMapping
-    public Mono<ChatMessage> insertChatConversation(@RequestBody ChatMessage chatConversation) {
+    public Mono<ChatMessage> insertChatConversation(@Valid @RequestBody ChatMessage chatConversation) {
         return chatConversationService.create(chatConversation);
     }
 

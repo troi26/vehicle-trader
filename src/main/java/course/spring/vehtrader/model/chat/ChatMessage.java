@@ -1,7 +1,6 @@
 package course.spring.vehtrader.model.chat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import course.spring.vehtrader.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Document("chat_messages")
 @Data
@@ -24,6 +22,7 @@ public class ChatMessage {
 
     @NonNull
     @NotNull
+    @Size(min = 1)
     String channelId;
 
     @NonNull
