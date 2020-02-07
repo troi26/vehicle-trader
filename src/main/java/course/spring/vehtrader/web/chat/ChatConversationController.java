@@ -1,9 +1,9 @@
 package course.spring.vehtrader.web.chat;
 
-import course.spring.vehtrader.domain.chat.ChatConversationService;
-import course.spring.vehtrader.model.chat.ChatConversation;
-import course.spring.vehtrader.model.chat.Message;
+import course.spring.vehtrader.domain.chat.ChatMessageService;
+import course.spring.vehtrader.model.chat.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,36 +13,33 @@ import reactor.core.publisher.Mono;
 public class ChatConversationController {
 
     @Autowired
-    private ChatConversationService chatConversationService;
+    private ChatMessageService chatConversationService;
 
     @GetMapping
-    public Flux<ChatConversation> getAllChatConversations() {
+    public Flux<ChatMessage> getAllChatConversations() {
         return chatConversationService.findAll();
     }
 
     @GetMapping("{id}")
-    public Mono<ChatConversation> getChatConversationById(@PathVariable String id) {
+    public Mono<ChatMessage> getChatConversationById(@PathVariable String id) {
         return chatConversationService.findById(id);
     }
 
-    @GetMapping("/user/{userId}")
-    public Flux<ChatConversation> getChatConversationByUserId(@PathVariable String userId) {
-        return chatConversationService.getByUserId(userId);
+    @GetMapping(path = "/channel/{channelId}", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<ChatMessage> getChatConversationByUserId(@PathVariable String channelId) {
+        return chatConversationService.findByChannelId(channelId);
+    }
+
+    @GetMapping(path = "/senderAndReceiver/{senderId}/{receiverId}", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<ChatMessage> getChatConversationByUserId(@PathVariable String senderId, @PathVariable String receiverId) {
+        return chatConversationService.findBySenderAndReceiverId(senderId, receiverId);
     }
 
     @PostMapping
-    public Mono<ChatConversation> insertChatConversation(@RequestBody ChatConversation chatConversation) {
+    public Mono<ChatMessage> insertChatConversation(@RequestBody ChatMessage chatConversation) {
         return chatConversationService.create(chatConversation);
     }
 
-    @PostMapping("{id}")
-    public Mono<ChatConversation> insertMessageIntoConversation(@PathVariable String id, @RequestBody Message message) {
-        Mono<ChatConversation> chatConversationMono = chatConversationService.findById(id);
-        return chatConversationMono.flatMap(conversation -> {
-            conversation.getMessageHistory().add(message);
-            return Mono.just(conversation);
-        }).flatMap(chatConversationService::update);
-    }
 
     //We don't want PutMethod because that way one could alter the message history.
 
@@ -56,7 +53,7 @@ public class ChatConversationController {
 //    }
 
     @DeleteMapping("{id}")
-    public Mono<ChatConversation> deleteChatConversation(@PathVariable String id) {
+    public Mono<ChatMessage> deleteChatConversation(@PathVariable String id) {
         return chatConversationService.delete(id);
     }
 }

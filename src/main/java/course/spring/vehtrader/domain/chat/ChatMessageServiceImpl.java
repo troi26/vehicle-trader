@@ -1,43 +1,43 @@
 package course.spring.vehtrader.domain.chat;
 
 import course.spring.vehtrader.exceptions.NonExistingEntityException;
-import course.spring.vehtrader.model.chat.ChatConversation;
-import course.spring.vehtrader.repo.chat.ChatConversationRepository;
+import course.spring.vehtrader.model.chat.ChatMessage;
+import course.spring.vehtrader.repo.chat.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class ChatConversationServiceImpl implements ChatConversationService {
+public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Autowired
-    ChatConversationRepository chatConversationRepository;
+    ChatMessageRepository chatConversationRepository;
 
     @Override
-    public Flux<ChatConversation> findAll() {
+    public Flux<ChatMessage> findAll() {
         return chatConversationRepository.findAll();
     }
 
     @Override
-    public Mono<ChatConversation> findById(String id) {
+    public Mono<ChatMessage> findById(String id) {
         return chatConversationRepository.findById(id)
                 .switchIfEmpty(Mono.error(new NonExistingEntityException(
                         String.format("ChatConversation with ID:%s does not exist.", id))));
     }
 
     @Override
-    public Mono<ChatConversation> create(ChatConversation chatConversation) {
+    public Mono<ChatMessage> create(ChatMessage chatConversation) {
         return chatConversationRepository.insert(chatConversation);
     }
 
     @Override
-    public Mono<ChatConversation> update(ChatConversation chatConversation) {
+    public Mono<ChatMessage> update(ChatMessage chatConversation) {
         return chatConversationRepository.save(chatConversation);
     }
 
     @Override
-    public Mono<ChatConversation> delete(String id) {
+    public Mono<ChatMessage> delete(String id) {
         return chatConversationRepository.findById(id)
                 .flatMap(user -> chatConversationRepository.deleteById(id).thenReturn(user))
                 .switchIfEmpty(Mono.error(new NonExistingEntityException(
@@ -45,10 +45,18 @@ public class ChatConversationServiceImpl implements ChatConversationService {
     }
 
     @Override
-    public Flux<ChatConversation> getByUserId(String userId) {
-        Flux<ChatConversation> chatUser1 = chatConversationRepository.findByUser1Id(userId);
-        Flux<ChatConversation> chatUser2 = chatConversationRepository.findByUser2Id(userId);
-        return Flux.concat(chatUser1, chatUser2).switchIfEmpty(Flux.error(new NonExistingEntityException(String.format("ChatConversation with userID: %s involved does not exist.", userId))));
+    public Flux<ChatMessage> findBySenderAndReceiverId(String sender, String receiver) {
+        return chatConversationRepository.findBySenderAndReceiver(sender, receiver);
+    }
+
+//    @Override
+//    public Flux<ChatConversation> findBySenderAndReceiverId(String sender, String receiver) {
+//        return chatConversationRepository.findBySenderAndReceiver(sender, receiver);
+//    }
+
+    @Override
+    public Flux<ChatMessage> findByChannelId(String channelId) {
+        return chatConversationRepository.findByChannelId(channelId);
     }
 
     @Override

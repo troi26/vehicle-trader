@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-import { UsersPreviewerView } from './UsersPreviewerView';
-import { getAllUsers } from '../../api/UsersFetchAPI';
+import {OffersPreviewerView} from "./OffersPreviewerView";
+import {getOffersByUserId} from "../../api/OffersFetchAPI";
 
-export class UsersPreviewerContainer extends Component {
+export class OffersPreviewerContainer extends Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            users: [],
+            offers: [],
         };
 
         this.interval = null;
@@ -16,14 +16,14 @@ export class UsersPreviewerContainer extends Component {
 
     componentDidMount () {
         this.interval = setInterval(() => {
-            getAllUsers()
+            getOffersByUserId()
                 .then((response) => {
                     return response.json();
                 }).then((response) => {
                     console.log(response);
                     this.setState({
-                        users: response,
-                    });
+                        offers: response,
+                    })
                 })
                 .catch((reason) => {
                     console.log(reason);
@@ -38,16 +38,17 @@ export class UsersPreviewerContainer extends Component {
 
     render() {
         return (
-            <UsersPreviewerView
+            <OffersPreviewerView
                 {...this.state}
-               style={{
-                   ...this.props.style,
-               }}
+                {...this.props}
+                style={{
+                    ...this.props.style,
+                }}
             />
         );
 
     }
 }
 
-UsersPreviewerContainer.defaultProps = {
+OffersPreviewerContainer.defaultProps = {
 };

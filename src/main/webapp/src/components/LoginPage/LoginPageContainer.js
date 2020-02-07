@@ -36,6 +36,9 @@ export class LoginPageContainer extends Component{
     render() {
         return (
             <LoginPageView
+                style={{
+                    ...this.props.style,
+                }}
                 formRef={this.fm}
                 username={this.state.username}
                 password={this.state.password}

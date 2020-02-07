@@ -1,0 +1,43 @@
+<div th:fragment="menu(path, logged)" xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" th:class="${path == 'posts'}? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" href="/posts">Post</a>
+                </li>
+                <li class="nav-item" th:class="${path == 'users'}? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item" th:class="${path == '/posts/post-form'}? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" href="/posts/post-form">Add Post</a></li>
+                <li th:if="${logged.roles.contains('ROLE_ADMIN')}" class="nav-item" th:class="${path == '/users/user-form'}? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" href="/users/user-form">Add User</a></li>
+            </ul>
+            <form class="language-form form-inline my-2 my-lg-0">
+                <div class="form-group language-selector">
+                    <label for="locales" class="menu-label col-form-label">Language</label>
+                    <select id="locales" class="form-control">
+                        <option value="en-US" th:selected="${#locale.toLanguageTag() == 'en-US'}">EN</option>
+                        <option value="bg-BG" th:selected="${#locale.toLanguageTag() == 'bg-BG'}">BG</option>
+                    </select>
+                </div>
+            </form>
+            <ul class="navbar-nav ml-auto p-2">
+                <img class="navbar-avatar rounded-circle ml-auto p-2" style="max-height: 64px; height: 64px; width: 64px;"
+                     th:if="${logged.avatarUrl != null}"
+                     th:src="${'/uploads/' + logged.avatarUrl}" />
+                <li class="nav-item align-self-center">
+                    <span class="align-middle" style="height: 100%;"
+                          th:text="${logged.name} + ' ' + ${logged.surname}"></span>
+                </li>
+                <li class="nav-item align-self-center">
+                    <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
