@@ -65,6 +65,18 @@ public class WebConfig implements WebMvcConfigurer {
         };
     }
 
+    // Това тук enable-ва CORS заявки от http://localhost:3000 за тестови цели с react hot reload
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("PUT", "DELETE", "POST", "GET", "OPTIONS")
+                .allowedHeaders("*"/*, "authorization", "content-type", "x-auth-token", "Access-Control-Allow-Credentials"*/)
+                .exposedHeaders("authorization", "content-type", "x-auth-token")
+                .allowCredentials(true)
+                .maxAge(3600);
+    }
+
     //Tomcat large file upload connection reset
     //http://www.mkyong.com/spring/spring-file-upload-and-connection-reset-issue/
     // Set maxPostSize of embedded tomcat server to 11 megabytes (default is 2 MB, not large enough to support file uploads > 1.5 MB)

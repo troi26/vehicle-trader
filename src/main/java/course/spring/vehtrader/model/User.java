@@ -66,6 +66,18 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String toString() {
+        return String.format(
+                "{ \"id\": \"%s\", \"name\": \"%s\", \"surname\": \"%s\"," +
+                        "\"username\": \"%s\", \"roles\": \"%s\" }",
+                this.id,
+                this.name,
+                this.surname,
+                this.username,
+                this.roles);
+    }
+
+    @Override
     public String getUsername() {
         return username;
     }

@@ -28,9 +28,10 @@ export class LoginPageContainer extends Component{
 
     handleSubmit (event) {
         event.preventDefault();
-        login(event.target)
-            .then((response) => console.log(response))
-            .catch((reason) => console.log(reason));
+        this.props.onLogin({
+            username: this.state.username,
+            password: this.state.password,
+        }, event);
     };
 
     render() {

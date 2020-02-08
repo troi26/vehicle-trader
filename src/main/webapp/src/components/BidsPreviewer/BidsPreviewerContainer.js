@@ -14,9 +14,14 @@ export class BidsPreviewerContainer extends Component {
 	}
 
 	addNewBidToState (bid) {
-		this.setState({
-			bids: this.state.bids.concat([bid])
-		});
+
+		console.log("addNewBidToState");
+		const avBidIds = this.state.bids.map(b => b.id);
+		if (!avBidIds.includes(bid.id)) {
+			this.setState({
+				bids: this.state.bids.concat([bid]),
+			});
+		}
 	}
 
 	addNewBidToDB (bid = {
@@ -26,7 +31,7 @@ export class BidsPreviewerContainer extends Component {
 		created_at: new Date("2020-02-05T22:23:09.000+00:00"),
 		modified_at: new Date("2020-02-05T22:23:09.000+00:00"),
 	}) {
-		const result = postBid(bid);
+		const result = postBid(bid, this.props.authToken);
 
 		result
 			.then((response) => {
@@ -42,8 +47,8 @@ export class BidsPreviewerContainer extends Component {
 	componentDidMount() {
 		console.log("componentDidMount");
 		this.startEventListener();
-		setTimeout(this.addNewBidToDB, 3000);
-		setTimeout(this.addNewBidToDB, 10000);
+		setTimeout(this.addNewBidToDB.bind(this), 3000);
+		setTimeout(this.addNewBidToDB.bind(this), 10000);
 	}
 
 	componentWillUnmount() {
@@ -53,14 +58,20 @@ export class BidsPreviewerContainer extends Component {
 
 	startEventListener () {
 		if(typeof(EventSource) !== "undefined") {
+			console.log("startEventListener", this.props.authToken);
 			if (this.eventSource === null) {
 				const offerId = "5e3aebed7703ff2ec194cb14";
-				this.eventSource = getBidsByOfferId(offerId);
-				this.eventSource.onmessage = (event) => {
+				this.eventSource = getBidsByOfferId(offerId, this.props.authToken);
+				this.eventSource.addEventListener("message", (event) => {
 					const newData = JSON.parse(event.data);
 					console.log(newData);
 					this.addNewBidToState(newData);
-				};
+				});
+				// this.eventSource.onmessage = (event) => {
+				// 	const newData = JSON.parse(event.data);
+				// 	console.log(newData);
+				// 	this.addNewBidToState(newData);
+				// };
 			}
 		} else {
 			console.log("EventSource not enabled");

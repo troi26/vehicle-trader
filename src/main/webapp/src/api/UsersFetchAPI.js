@@ -6,7 +6,13 @@ import {USERS} from "./Endpoints";
  */
 export const getAllUsers = () => {
     console.log("getAllUsers");
-    return fetch(USERS.GET_ALL);
+    return fetch(USERS.GET_ALL/*, {
+        mode: 'cors',
+        headers: {
+            credentials: true,
+            // Authorization: `${token.tokenType} ${token.accessToken}`,
+        },
+    }*/);
 };
 
 /**
@@ -14,5 +20,9 @@ export const getAllUsers = () => {
  * @returns {Promise<Response>} -
  */
 export const getUserById = (userId) => {
-    return fetch(`${USERS.GET_BY_ID}?id=${userId}`);
+    return fetch(`${USERS.GET_BY_ID}?id=${userId}`, {
+        // headers: {
+        //     Authorization: `${token.tokenType} ${token.accessToken}`,
+        // },
+    });
 };
