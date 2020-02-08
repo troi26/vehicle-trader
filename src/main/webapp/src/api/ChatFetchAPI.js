@@ -19,7 +19,6 @@ export const postChatMessage = (chatMessage) => {
     const dateStr = convertToString(chatMessage.messageDateTime);
     chatMessage.messageDateTime = dateStr;
     return fetch(CHATS.POST_CHAT_ON_CHANNEL, {
-        mode: 'cors',
         method: 'POST',
         headers: {
             // 'Accept': '*/*',

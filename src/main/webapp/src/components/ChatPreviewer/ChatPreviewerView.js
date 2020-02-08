@@ -8,7 +8,9 @@ export const ChatPreviewerView = (props) => {
     return (
         <div>
             <ul className="Messages-list">
-                {props.chatMessages.map(m => <MessageContainer message = {m.message}/>)}
+                {props.chatMessages.map(m => <MessageContainer className={props.loggedIn.id === m.sender 
+                    ? "vk-messageMe" : "vk-messageOther"} 
+                    message = {m.message}/>)}
             </ul>
             <InputContainer {...props}/>
         </div>

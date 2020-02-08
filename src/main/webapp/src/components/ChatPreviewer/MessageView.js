@@ -8,8 +8,8 @@ export const MessageView = (props) => {
     // const className = messageFromMe ?
     // "Messages-message currentMember" : "Messages-message";
     return (
-        <li>
-            <div className="Message-content">
+        <li className={props.className}> 
+            <div >
                 {props.message}
             </div>
         </li>

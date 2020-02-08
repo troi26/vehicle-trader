@@ -1,0 +1,32 @@
+.vk-messageMe {
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: white;
+    background-color: blue;
+  }
+
+.vk-messageOther {
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    color: white;
+    background-color: red;
+}
+
+.vk-chat-form-input {
+    border-radius: 10px;
+    padding-left: 10px;
+    margin-left: 10px;
+    border-width: 4px;
+    
+}
+
+.vk-chat-form-button {
+    margin-top: 5px;
+    background-color: blue; 
+}

@@ -9,8 +9,20 @@ export class ChatPreviewerContainer extends Component {
 
 		this.state = {
 			chatMessages: [
-                {message: "hello"},
-                {message: "hllo to you too"}
+				{	
+					channelId: "mychannel",
+					receiver: "5e35c1701dc6010fac896bd9",
+					sender: "5e39f3a30900f80b4ecde437",
+					message: "hello",
+					messageDateTime: "2020-02-10 10:00:00"
+				},
+                {
+					channelId: "mychannel",
+					receiver: "5e39f3a30900f80b4ecde437",
+					sender: "5e35c1701dc6010fac896bd9",
+					message: "Hello to you too",
+					messageDateTime: "2020-02-10 10:00:05"
+				}
             ],
 		};
 
@@ -28,7 +40,7 @@ export class ChatPreviewerContainer extends Component {
 
     addNewChatToState (chat) {
 		this.setState({
-			chatMessages: this.state.chatMessages.concat([{message: chat.message}]),
+			chatMessages: this.state.chatMessages.concat([chat]),
 		});
     }
     
@@ -53,8 +65,8 @@ export class ChatPreviewerContainer extends Component {
 		const jsonData = {
 			message : event.target.elements[0].value,
 			channelId : "mychat",
-			sender : "5e3d604c2ff016165bb3ca6c",
-			receiver : "5e3842f2cfd1e30e970d9d9d",
+			sender : this.props.loggedIn.id,
+			receiver : "5e35c1701dc6010fac896bd9",
 			messageDateTime : new Date()
 		}
 		postChatMessage(jsonData);
