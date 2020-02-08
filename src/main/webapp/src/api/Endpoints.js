@@ -4,6 +4,12 @@ export const BIDS = {
     POST_BIDS_OF_OFFER: "http://localhost:8080/api/bids/save",
 };
 
+// Chat endpoints
+export const CHATS = {
+    GET_CHATS_BY_CHANNEL: "http://localhost:8080/api/chat/channel/",
+    POST_CHAT_ON_CHANNEL: "http://localhost:8080/api/chat",
+};
+
 // Offers endpoints
 export const OFFERS = {
     GET_ALL: "http://localhost:8080/api/offers",

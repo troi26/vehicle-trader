@@ -15,7 +15,7 @@ export class BidsPreviewerContainer extends Component {
 
 	addNewBidToState (bid) {
 		this.setState({
-			bids: this.state.bids.concat([bid]),
+			bids: this.state.bids.concat([bid])
 		});
 	}
 

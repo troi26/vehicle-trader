@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {HeaderContainer} from "./components/Header/HeaderContainer";
 import {OffersPreviewerContainer} from "./components/OffersPreviewer/OffersPreviewerContainer";
 import {BidsPreviewerContainer} from "./components/BidsPreviewer/BidsPreviewerContainer";
+import { ChatPreviewerContainer } from './components/ChatPreviewer/ChatPreviewerContainer';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
                 height: '33%',
                 overflowY: 'auto',
             }}/>
-        <OffersPreviewerContainer
+        <ChatPreviewerContainer
             style={{
                 margin: '0.5em',
                 height: '33%',
@@ -41,6 +42,7 @@ function App() {
                 overflowY: 'auto',
             }}
         />
+        
     </div>
   );
 }
