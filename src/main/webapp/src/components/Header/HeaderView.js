@@ -8,7 +8,7 @@ export const HeaderView = (props) => {
 
     return (
         <Navbar color="faded" light>
-            <NavbarBrand href="/" className="mr-auto">reactstrap</NavbarBrand>
+            <NavbarBrand href="/" className="mr-auto">HODINI Trader</NavbarBrand>
             <NavbarToggler onClick={toggleNavbar} className="mr-2" />
             <Collapse isOpen={!collapsed} navbar>
                 <Nav navbar>
@@ -20,6 +20,9 @@ export const HeaderView = (props) => {
                     </NavItem>
                     <NavItem>
                         <NavLink onClick={props.onLogoutClick} href={"#"}>Logout</NavLink>
+                    </NavItem>
+                    <NavItem>
+
                     </NavItem>
                 </Nav>
             </Collapse>

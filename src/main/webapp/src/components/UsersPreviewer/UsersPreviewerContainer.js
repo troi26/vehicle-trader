@@ -15,8 +15,8 @@ export class UsersPreviewerContainer extends Component {
     }
 
     componentDidMount () {
-        this.interval = setInterval(() => {
-            getAllUsers()
+        this.interval = setTimeout(() => {
+            getAllUsers(this.props.authToken)
                 .then((response) => {
                     return response.json();
                 }).then((response) => {

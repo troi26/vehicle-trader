@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {OffersPreviewerView} from "./OffersPreviewerView";
-import {getOffersByUserId} from "../../api/OffersFetchAPI";
+import {getAllOffers, getOffersByUserId, postOffer} from "../../api/OffersFetchAPI";
 
 export class OffersPreviewerContainer extends Component {
     constructor (props) {
@@ -15,8 +15,24 @@ export class OffersPreviewerContainer extends Component {
     }
 
     componentDidMount () {
-        this.interval = setInterval(() => {
-            getOffersByUserId()
+        postOffer({
+            userId: "5e3aeb10831f801e447e5eb1",
+            minCash: 120000,
+            created_at: new Date("2020-02-05T16:23:09.466+00:00"),
+            modified_at: new Date("2020-02-05T16:23:09.466+00:00"),
+            kmRun: -1,
+            climatic: true,
+            leatherSeats: false,
+            electronicWindows: true,
+            electronicMirrors: true,
+            horsePower: -1,
+        })
+            .then((response) => response.json())
+            .then((response) => console.log(response))
+            .catch(reason => console.log(reason));
+
+        this.interval = setTimeout(() => {
+            getAllOffers(this.props.loggedIn.id)
                 .then((response) => {
                     return response.json();
                 }).then((response) => {
@@ -28,7 +44,7 @@ export class OffersPreviewerContainer extends Component {
                 .catch((reason) => {
                     console.log(reason);
                 });
-        }, 1000);
+        }, 2000);
     }
 
     componentWillUnmount() {
