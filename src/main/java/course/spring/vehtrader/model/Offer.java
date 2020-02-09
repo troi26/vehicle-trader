@@ -25,6 +25,9 @@ public class Offer {
     @NotNull
     @NonNull
     private double startingPrice;
+    @NotNull
+    @NonNull
+    private String title = "Default title...";
 
     // If the vehicle is user or a new on
     private boolean usedStatus = false;
