@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from "reactstrap";
+import Col from "reactstrap/es/Col";
+import Dropdown from "reactstrap/es/Dropdown";
 
 export const HeaderView = (props) => {
 
@@ -9,6 +11,18 @@ export const HeaderView = (props) => {
     return (
         <Navbar color="faded" light>
             <NavbarBrand href="/" className="mr-auto">HODINI Trader</NavbarBrand>
+            <Col>
+                {/*<Dropdown>*/}
+                    <img src={props.loggedIn.avatarUrl
+                        ? `http://localhost:8080/uploads/${props.loggedIn.avatarUrl}`
+                        : "http://localhost:8080/uploads/no_avatar.png"}
+                        className={'vt-avatar-img'}
+                    />
+                {/*</Dropdown>*/}
+
+            </Col>
+            <Col>{props.loggedIn.username}</Col>
+            <Col>{`${props.loggedIn.name} ${props.loggedIn.surname}`}</Col>
             <NavbarToggler onClick={toggleNavbar} className="mr-2" />
             <Collapse isOpen={!collapsed} navbar>
                 <Nav navbar>
@@ -20,9 +34,6 @@ export const HeaderView = (props) => {
                     </NavItem>
                     <NavItem>
                         <NavLink onClick={props.onLogoutClick} href={"#"}>Logout</NavLink>
-                    </NavItem>
-                    <NavItem>
-
                     </NavItem>
                 </Nav>
             </Collapse>
