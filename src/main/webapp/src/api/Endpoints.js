@@ -7,6 +7,7 @@ export const BIDS = {
 // Offers endpoints
 export const OFFERS = {
     GET_ALL: "http://localhost:8080/api/offers",
+    GET_BY_ID: "http://localhost:8080/api/offers",
     GET_BY_USER: "http://localhost:8080/api/offers",
     POST_OFFER: "http://localhost:8080/api/offers",
 };

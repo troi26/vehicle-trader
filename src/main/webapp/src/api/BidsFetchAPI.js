@@ -5,9 +5,8 @@ import { BIDS } from "./Endpoints";
  * @param offerId - the ID of the offer
  * @returns {EventSource} - returns the subscription object
  */
-export const getBidsByOfferId = (offerId, token) => {
+export const getBidsByOfferId = (offerId) => {
     console.log("getBidsByOfferId");
-    console.log(token);
     return new EventSource(`${BIDS.GET_BIDS_OF_OFFER}?offerId=${offerId}`);
 };
 
@@ -16,7 +15,7 @@ export const getBidsByOfferId = (offerId, token) => {
  * @param bid - bid to be submitted
  * @returns {Promise<Response>} - returns a promise for further manipulations
  */
-export const postBid = (bid, token) => {
+export const postBid = (bid) => {
     console.log(bid);
 
     return fetch(BIDS.POST_BIDS_OF_OFFER, {
