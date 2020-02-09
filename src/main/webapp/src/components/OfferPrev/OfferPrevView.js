@@ -4,6 +4,7 @@ import {ApiErrorPrevView} from "../ApiErrorPrev/ApiErrorPrevView";
 import Spinner from "reactstrap/es/Spinner";
 import CardImg from "reactstrap/es/CardImg";
 import Button from "reactstrap/es/Button";
+import {BidInputView} from "../BidInput/BidInputView";
 
 export const OfferPrevView = (props) => {
 
@@ -34,6 +35,11 @@ export const OfferPrevView = (props) => {
                                     fontWeight: 'bolder',
                                 }}
                             >{props.offer.title}</Col>
+                            <Col
+                                style={{
+                                    fontWeight: 'normal',
+                                }}
+                            ><b>Highest bid: </b>{props.highestBid ? props.highestBid : "There is still no bids"}</Col>
                         </Row>
                         <Row
                             className={'vt-margin'}
@@ -132,7 +138,7 @@ export const OfferPrevView = (props) => {
                             </Row>
                         </Row>
                         <Row>
-                            {props.loggedIn.id !== props.offer.userId &&
+                            {props.loggedIn.id !== props.offer.userId && !props.bidding &&
                                 <Button
                                     onClick={(event) => props.onBidOfferAttempt(props.offer, event)}
                                 >
@@ -146,6 +152,16 @@ export const OfferPrevView = (props) => {
                                 >
                                     Edit
                                 </Button>
+                            }
+                            { props.bidding && props.loggedIn.id !== props.offer.userId &&
+                                <BidInputView
+                                    style={props.style}
+                                    offer={props.offer}
+                                    value={props.bidValue}
+                                    logged={props.loggedIn}
+                                    onValueChange={props.onBidValueChange}
+                                    onSubmitBid={props.onSubmitBid}
+                                />
                             }
                         </Row>
                     </Container>

@@ -9,7 +9,6 @@ import DatePicker from "react-datepicker/es";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const OfferEditView = (props) => {
-
     return (
         <div
             style={props.style}

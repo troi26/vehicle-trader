@@ -53,3 +53,17 @@
 .vt-full-width {
     width: 100%;
 }
+
+.vt-centered-cont {
+    text-align: center;
+}
+
+.vt-margin-auto {
+    margin: auto;
+}
+
+.vt-avatar-img {
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+}

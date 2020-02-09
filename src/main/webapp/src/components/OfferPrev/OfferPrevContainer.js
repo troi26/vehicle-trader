@@ -6,6 +6,7 @@ import {TAB_INDEXES} from "../../NavigationConstants/constants";
 import {OfferEditView} from "./OfferEditView";
 import Spinner from "reactstrap/es/Spinner";
 import {getUserById} from "../../api/UsersFetchAPI";
+import {getBidsByOfferId, postBid} from "../../api/BidsFetchAPI";
 
 export class OfferPrevContainer extends Component {
     constructor (props) {
@@ -17,9 +18,15 @@ export class OfferPrevContainer extends Component {
             error: null,
             editedValues: null,
             author: null,
+
+            bidding: true,
+            bidValue: 0,
+            bids: [],
         };
 
         this.interval = null;
+
+        this.bidsStream= null;
     }
 
     setOffer (offer) {
@@ -68,6 +75,16 @@ export class OfferPrevContainer extends Component {
         });
     }
 
+    updateBidsList (bid) {
+        console.log("addNewBidToState");
+        const avBidIds = this.state.bids.map(b => b.id);
+        if (!avBidIds.includes(bid.id)) {
+            this.setState({
+                bids: this.state.bids.concat([bid]),
+            });
+        }
+    }
+
     componentDidMount () {
         console.log("componentDidMount");
         if (!this.state.offer) {
@@ -95,7 +112,23 @@ export class OfferPrevContainer extends Component {
                         .catch(reason => {
                             console.log(reason);
                             this.setOffer(offer);
-                        })
+                        });
+
+                    // const offerId = "5e3aebed7703ff2ec194cb14";
+                    // this.eventSource = getBidsByOfferId(offerId);
+                    // this.eventSource.addEventListener("message", (event) => {
+                    //     const newData = JSON.parse(event.data);
+                    //     console.log(newData);
+                    //     this.addNewBidToState(newData);
+                    // });
+
+                    // console.log(offer.id);
+                    this.bidsStream = getBidsByOfferId(offer.id);
+                    this.bidsStream.addEventListener("message", (event) => {
+                        const newData = JSON.parse(event.data);
+                        console.log(newData);
+                        this.updateBidsList(newData);
+                    });
                 })
                 .catch(reason => {
                     console.log();
@@ -107,6 +140,10 @@ export class OfferPrevContainer extends Component {
     componentWillUnmount() {
         clearInterval(this.interval);
         this.interval = null;
+
+        // Closing event stream
+        this.bidsStream.close();
+        this.bidsStream = null;
     }
 
     changeTransmissionTHandler (event) {
@@ -274,29 +311,64 @@ export class OfferPrevContainer extends Component {
         }
     }
 
+    valueChangeHandler (event) {
+        const value = parseInt(event.target.value);
+        console.log("valueChangeHandler: ", value);
+        if (value >= 0 || !value) {
+            this.setState({
+                bidValue: value,
+            });
+        }
+    }
+
+    bidSubmitHandler (bid) {
+        postBid(bid)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                throw response.error();
+            })
+            .then(response => {
+                console.log(response);
+                this.endBidding();
+            })
+            .catch(reason => {
+                console.log(reason);
+                this.endBidding();
+            });
+    }
+
+    endBidding () {
+        this.setState({
+            bidding: false,
+        });
+    }
+
+    bidAttemptHandler () {
+        this.setState({
+            bidding: true,
+        });
+    }
+
+    findHighestBid () {
+        console.log("findHighestBid");
+        if (this.state.bids.length > 0) {
+            const bids = this.state.bids.slice();
+            bids.sort((b1, b2) => b2.value - b1.value);
+            console.log(bids);
+            return bids[0].value;
+        }
+
+        return null;
+    }
+
     render() {
         if (this.state.loading) {
             return <Spinner />;
         } else {
-            // let offer = this.props.offer;
-            // if (!this.state.offer) {
-            //     offer = this.state.offer;
-            //     console.log("IN ", offer);
-            //     const dates = this.getDates(offer);
-            //     offer = {
-            //         ...offer,
-            //         ...dates,
-            //     };
-            // }
-            //
-            // offer = {
-            //     ...offer,
-            //     manufactured: new Date(offer.manufactured),
-            // };
-
             if (this.props.tabIdx === TAB_INDEXES.OFFER_EDIT) {
 
-                console.log("IF");
                 return (
                     <OfferEditView
                         {...this.state}
@@ -322,13 +394,11 @@ export class OfferPrevContainer extends Component {
                         onChangeModel={this.changeModelHandler.bind(this)}
                         onChangeIncludedExcluded={this.changeIncludedExcluded.bind(this)}
                         onLoadNewImage={this.loadImageHandler.bind(this)}
+
+
                     />
                 );
             } else {
-                console.log("ELSE");
-                // console.log("render: ", this.props.offer);
-                // console.log("render: ", this.state.offer);
-                // console.log("render: ", offer);
                 return (
                     <OfferPrevView
                         {...this.state}
@@ -339,6 +409,13 @@ export class OfferPrevContainer extends Component {
                         style={{
                             ...this.props.style,
                         }}
+
+                        highestBid={this.findHighestBid()}
+
+                        onBidValueChange={this.valueChangeHandler.bind(this)}
+                        onSubmitBid={this.bidSubmitHandler.bind(this)}
+
+                        onBidOfferAttempt={this.bidAttemptHandler.bind(this)}
                     />
                 );
             }
