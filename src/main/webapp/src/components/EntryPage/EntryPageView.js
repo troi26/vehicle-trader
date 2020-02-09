@@ -4,6 +4,7 @@ import {LoginPageContainer} from "../LoginPage/LoginPageContainer";
 import {BidsPreviewerContainer} from "../BidsPreviewer/BidsPreviewerContainer";
 import {OffersPreviewerContainer} from "../OffersPreviewer/OffersPreviewerContainer";
 import {ForumPagePreviewerContainer} from "../ForumPreviewer/ForumPagePreviewerContainer";
+import {ForumAllPreviewerContainer} from "../ForumPreviewer/ForumAllPreviewerContainer";
 import {ChatPreviewerContainer} from "../ChatPreviewer/ChatPreviewerContainer";
 
 export const EntryPageView = (props) => {
@@ -54,7 +55,7 @@ export const EntryPageView = (props) => {
                             height: '33%',
                             overflowY: 'auto',
                         }}/>
-                    <ForumPagePreviewerContainer
+                    <ForumAllPreviewerContainer
                         {...props}
                         style={{
                             margin: '0.5em',
