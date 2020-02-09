@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 
-import { getAllUsers } from '../../api/UsersFetchAPI';
 import {EntryPageView} from "./EntryPageView";
 import {getLoggedUser, login, logout} from "../../api/SecurityFetchAPI";
-
+import '../../css/chat.css';
+import '../../css/forum.css';
 export class EntryPageContainer extends Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            // loggedIn: {
-            //     id: '5e3aeb10831f801e447e5eb1',
-            //     username: 'admin',
-            // },
-            loggedIn: null,
+            loggedIn: {
+                id: '5e35c1701dc6010fac896bd9',
+                username: 'admin',
+            },
+            // loggedIn: null,
             loading: false,
         };
 
@@ -74,7 +74,7 @@ export class EntryPageContainer extends Component {
 
     componentDidMount () {
         console.log("MOUNTING:");
-        this.checkForSession();
+        // this.checkForSession();
     }
 
     componentWillUnmount() {

@@ -22,7 +22,13 @@ public class Post {
 
     @NonNull
     @NotNull
+    @Size(min=1)
     String userId;
+
+    @NonNull
+    @NotNull
+    @Size(min=1)
+    String username;
 
     @NonNull
     @NotNull

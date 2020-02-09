@@ -10,6 +10,13 @@ export const CHATS = {
     POST_CHAT_ON_CHANNEL: "http://localhost:8080/api/chat",
 };
 
+// Forum endpoints
+export const FORUM = {
+    GET_FORUMS: "http://localhost:8080/api/forum/",
+    GET_FORUM_POSTS_BY_TOPIC: "http://localhost:8080/api/forum/",
+    POST_POST_ON_FORUM_BY_TOPIC: "http://localhost:8080/api/forum/"
+};
+
 // Offers endpoints
 export const OFFERS = {
     GET_ALL: "http://localhost:8080/api/offers",

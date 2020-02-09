@@ -3,7 +3,8 @@ import {HeaderContainer} from "../Header/HeaderContainer";
 import {LoginPageContainer} from "../LoginPage/LoginPageContainer";
 import {BidsPreviewerContainer} from "../BidsPreviewer/BidsPreviewerContainer";
 import {OffersPreviewerContainer} from "../OffersPreviewer/OffersPreviewerContainer";
-import {UsersPreviewerContainer} from "../UsersPreviewer/UsersPreviewerContainer";
+import {ForumPagePreviewerContainer} from "../ForumPreviewer/ForumPagePreviewerContainer";
+import {ChatPreviewerContainer} from "../ChatPreviewer/ChatPreviewerContainer";
 
 export const EntryPageView = (props) => {
     if (props.loading) {
@@ -53,7 +54,7 @@ export const EntryPageView = (props) => {
                             height: '33%',
                             overflowY: 'auto',
                         }}/>
-                    <OffersPreviewerContainer
+                    <ForumPagePreviewerContainer
                         {...props}
                         style={{
                             margin: '0.5em',
@@ -62,7 +63,7 @@ export const EntryPageView = (props) => {
                             overflowY: 'auto',
                         }}
                     />
-                    <UsersPreviewerContainer
+                    <ChatPreviewerContainer
                         {...props}
                         style={{
                             margin: '0.5em',

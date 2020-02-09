@@ -1,0 +1,14 @@
+.vk-forum-post p {
+    
+    color: white;
+}
+
+.vk-forum-post {
+    margin-bottom: 10px;
+    color: black;
+    list-style-type: none;
+    border-width: 30px;
+    border-color: red;
+    border-radius: 10px;
+    background-color: lightgray;
+}

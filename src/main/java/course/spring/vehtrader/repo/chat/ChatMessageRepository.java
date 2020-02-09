@@ -10,5 +10,5 @@ public interface ChatMessageRepository extends ReactiveMongoRepository<ChatMessa
     Flux<ChatMessage> findByChannelId(String channelId);
 
     @Tailable
-    Flux<ChatMessage> findBySenderAndReceiver(String sender, String receiver);
+    Flux<ChatMessage> findBySenderIdAndReceiverId(String sender, String receiver);
 }

@@ -46,7 +46,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     public Flux<ChatMessage> findBySenderAndReceiverId(String sender, String receiver) {
-        return chatConversationRepository.findBySenderAndReceiver(sender, receiver);
+        return chatConversationRepository.findBySenderIdAndReceiverId(sender, receiver);
     }
 
 //    @Override

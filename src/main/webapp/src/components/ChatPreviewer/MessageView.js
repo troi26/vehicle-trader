@@ -8,9 +8,11 @@ export const MessageView = (props) => {
     // const className = messageFromMe ?
     // "Messages-message currentMember" : "Messages-message";
     return (
-        <li className={props.className}> 
-            <div >
-                {props.message}
+        <li className={props.styleClassName}> 
+            <div>
+                <p>{props.senderUsername}</p>
+                <p>{props.message}</p>
+                <span className={props.styleClassTime}>{props.messageDateTime}</span>
             </div>
         </li>
     );

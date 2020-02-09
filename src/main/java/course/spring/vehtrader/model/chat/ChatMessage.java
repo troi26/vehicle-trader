@@ -27,11 +27,18 @@ public class ChatMessage {
 
     @NonNull
     @NotNull
-    String sender;
+    @Size(min = 1)
+    String senderId;
 
     @NonNull
     @NotNull
-    String receiver;
+    @Size(min = 1)
+    String senderUsername;
+
+    @NonNull
+    @NotNull
+    @Size(min = 1)
+    String receiverId;
 
     @NonNull
     @NotNull

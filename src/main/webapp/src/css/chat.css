@@ -1,4 +1,8 @@
 .vk-messageMe {
+    display: inline;
+    float: left;
+    clear: right;
+    list-style-type: none;
     margin-top: 2.5px;
     margin-bottom: 2.5px;
     border-radius: 10px;
@@ -8,12 +12,19 @@
     background-color: blue;
   }
 
+  .vk-ul {
+      display: block;
+  }
 .vk-messageOther {
+    display: inline;
+    float: right;
+    clear: left;
+    list-style-type: none;
     margin-top: 2.5px;
     margin-bottom: 2.5px;
+    border-radius: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-radius: 10px;
     color: white;
     background-color: red;
 }
@@ -29,4 +40,20 @@
 .vk-chat-form-button {
     margin-top: 5px;
     background-color: blue; 
+}
+
+/*asdfasfaf*/
+
+  
+  
+  /* Style time text */
+.vk-time-right {
+    float: right;
+    color: #aaa;
+}
+  
+  /* Style time text */
+.vk-time-left {
+    float: left;
+    color: #999;
 }
