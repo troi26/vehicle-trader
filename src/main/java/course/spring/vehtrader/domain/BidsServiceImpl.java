@@ -36,6 +36,11 @@ public class BidsServiceImpl implements BidsService {
     }
 
     @Override
+    public Flux<Bid> findAllByUserId(String id) {
+        return repo.findAllByUserId(id);
+    }
+
+    @Override
     public Mono<Bid> create(Bid bid) {
         return repo.insert(bid);
     }

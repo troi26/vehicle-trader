@@ -8,6 +8,7 @@ public interface BidsService {
     Flux<Bid> findAll();
     Mono<Bid> findById(String id);
     Flux<Bid> findAllByOfferId(String id);
+    Flux<Bid> findAllByUserId(String id);
     Mono<Bid> create(Bid bid);
     Mono<Bid> update(Bid bid);
     Mono<Bid> delete(String id);

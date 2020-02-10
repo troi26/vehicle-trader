@@ -8,4 +8,7 @@ import reactor.core.publisher.Flux;
 public interface BidsRepository extends ReactiveMongoRepository<Bid, String> {
     @Tailable
     public Flux<Bid> findAllByOfferId (String offerId);
+
+    @Tailable
+    public Flux<Bid> findAllByUserId (String userId);
 }
