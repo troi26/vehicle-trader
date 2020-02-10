@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { UserPrevView } from './UserPrevView';
-import {getAllUsers, getUserById, updateUser, uploadPhoto} from '../../api/UsersFetchAPI';
+import {deactivateAcc, getAllUsers, getUserById, updateUser, uploadPhoto} from '../../api/UsersFetchAPI';
 import {UserEditView} from "./UserEditView";
 import Spinner from "reactstrap/es/Spinner";
 import {TAB_INDEXES} from "../../NavigationConstants/constants";
@@ -81,6 +81,25 @@ export class UserPrevContainer extends Component {
         });
     }
 
+    deactivateAccClick (userId) {
+        deactivateAcc(userId)
+            .then(r => {
+                if (r.status === 200) {
+                    return r.text();
+                }
+                throw `Unsuccessful deactivation of ${userId}`;
+            })
+            .then(deacAcc => {
+                this.setState({
+                    user: {
+                        ...this.state.user,
+                        active: false
+                    },
+                })
+            })
+            .catch()
+    }
+
     render() {
         if (this.state.loading) {
             return <Spinner />;
@@ -96,6 +115,7 @@ export class UserPrevContainer extends Component {
                     }}
 
                     onEditAttempt={this.props.onUserEditClick}
+                    onDeactivateAccClick={this.deactivateAccClick.bind(this)}
                 />
             );
         }

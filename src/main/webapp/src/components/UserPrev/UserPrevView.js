@@ -61,7 +61,10 @@ export const UserPrevView = (props) => {
                                 className={'font-weight-bold'}
                             >Role: </label> {props.user.roles.replace("ROLE_", "") === "ADMIN"
                                 ? "ADMIN"
-                                : "DEALER"}</Col>
+                                : props.user.roles.replace("ROLE_", "") === "DEALER"
+                                    ? "DEALER"
+                                    : "BIDDER"}
+                            </Col>
                             <Col></Col>
                         </Row>
                             <Row
@@ -81,7 +84,7 @@ export const UserPrevView = (props) => {
                         </Col>
                     </Row>
                     <Row>
-                        {props.viewIdx === TAB_INDEXES.MY_ACCOUNT &&
+                        { (props.viewIdx === TAB_INDEXES.MY_ACCOUNT || props.user.id === props.loggedIn.id)&&
                             <Button
                                 className={'vt-horiz-margin'}
                                 onClick={(event) => props.onBidsShowClick(props.user.id, event)}
@@ -89,7 +92,8 @@ export const UserPrevView = (props) => {
                                 Bids history
                             </Button>
                         }
-                        { props.viewIdx === TAB_INDEXES.MY_ACCOUNT &&
+                        { (props.viewIdx === TAB_INDEXES.MY_ACCOUNT || props.user.id === props.loggedIn.id) &&
+                            props.user.roles !== "ROLE_BIDDER" &&
                             <Button
                                 className={'vt-horiz-margin'}
                                 onClick={(event) => props.onOffersShowClick(props.user.id, event)}
@@ -104,6 +108,26 @@ export const UserPrevView = (props) => {
                                 onClick={(event) => props.onEditAttempt(props.user.id, event)}
                             >
                             Edit account
+                            </Button>
+                        }
+                        { (props.loggedIn.roles === "ROLE_ADMIN" && props.loggedIn.id !== props.user.id) &&
+                            !props.user.active &&
+                            <Button
+                                color={"success"}
+                                className={'vt-horiz-margin'}
+                                onClick={(event) => props.onActivateAccClick(props.user.id, event)}
+                            >
+                                Activate account
+                            </Button>
+                        }
+                        { (props.loggedIn.roles === "ROLE_ADMIN" && props.loggedIn.id !== props.user.id) &&
+                            props.user.active &&
+                            <Button
+                                color={"danger"}
+                                className={'vt-horiz-margin'}
+                                onClick={(event) => props.onDeactivateAccClick(props.user.id, event)}
+                            >
+                                Deactivate account
                             </Button>
                         }
                     </Row>
