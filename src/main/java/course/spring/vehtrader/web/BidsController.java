@@ -28,8 +28,14 @@ public class BidsController {
     }
 
     @CrossOrigin
-    @GetMapping(path = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(params = "offerId", path = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Bid> streamBids(@RequestParam("offerId") String offerId){
         return bidsService.findAllByOfferId(offerId);
+    }
+
+    @CrossOrigin
+    @GetMapping(params = "userId", path = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Bid> streamBidsOfUser(@RequestParam("userId") String userId){
+        return bidsService.findAllByUserId(userId);
     }
 }
