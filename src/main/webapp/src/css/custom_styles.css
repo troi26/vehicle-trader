@@ -50,6 +50,11 @@
     margin-top: 1em;
 }
 
+.vt-horiz-margin {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
 .vt-full-width {
     width: 100%;
 }
@@ -66,4 +71,25 @@
     height: 2em;
     width: 2em;
     border-radius: 50%;
+}
+
+.vt-active-offer {
+    font-weight: bold;
+    background: #1c7430;
+    color: white;
+}
+
+.vt-closed-offer {
+    font-weight: bold;
+    background: darkred;
+    color: white;
+}
+
+.offer-small-img {
+    widht: 5em;
+    height: 5em;
+}
+
+.vt-flex-container {
+    display: inline-flex;
 }
