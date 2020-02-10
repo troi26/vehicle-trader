@@ -15,7 +15,8 @@ export const OFFERS = {
 // Users endpoints
 export const USERS = {
     GET_ALL: "http://localhost:8080/api/users",
-    GET_BY_ID: "http://localhost:8080/api/users"
+    GET_BY_ID: "http://localhost:8080/api/users",
+    PUT_USER: "http://localhost:8080/api/users",
 };
 
 // Security endpoints

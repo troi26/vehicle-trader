@@ -9,6 +9,15 @@ export const getBidsByOfferId = (offerId) => {
     console.log("getBidsByOfferId");
     return new EventSource(`${BIDS.GET_BIDS_OF_OFFER}?offerId=${offerId}`);
 };
+/**
+ * Method which subscribes to the endpoint which streams all the bids to given user
+ * @param userId - the ID of the user
+ * @returns {EventSource} - returns the subscription object
+ */
+export const getBidsByUserId = (userId) => {
+    console.log("getBidsByUserId");
+    return new EventSource(`${BIDS.GET_BIDS_OF_OFFER}?userId=${userId}`);
+};
 
 /**
  * Method that calls post bid end point to create a new bid

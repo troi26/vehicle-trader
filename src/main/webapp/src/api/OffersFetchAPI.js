@@ -21,14 +21,15 @@ export const postOffer = (offer) => {
 };
 
 export const putOffer = (offer) => {
-    console.log(offer);
-
+    console.log("putOffer", offer);
+    const JSONstrOffer = JSON.stringify(offer);
+    console.log(JSONstrOffer);
     return fetch(`${OFFERS.POST_OFFER}?id=${offer.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(offer),
+        body: JSONstrOffer,
     });
 };
 
