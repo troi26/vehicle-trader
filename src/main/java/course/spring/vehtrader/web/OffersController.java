@@ -50,7 +50,7 @@ public class OffersController {
 
     @CrossOrigin
     @PutMapping(params = "id")
-    public Offer updateOffer(@RequestParam("id") String id, @RequestBody Offer offer){
+    public Offer updateOffer(@RequestParam("id") String id, @RequestBody Offer offer) {
         if(!id.equals(offer.getId())) {
             throw new InvalidEntityException(
                     String.format("Offer ID='%s' is different from URL resource ID='%s'", offer.getId(), id));
@@ -72,7 +72,7 @@ public class OffersController {
             String fileName = files[0].getOriginalFilename().replaceFirst(".png", "");
             Offer offer = offerService.findById(fileName);
 
-            if (fileName.equals(offer.getPhotoUrl().replaceFirst(".png", ""))) {
+            if (offer.getPhotoUrl() != null && fileName.equals(offer.getPhotoUrl().replaceFirst(".png", ""))) {
                 fileName += "_1.png";
             } else {
                 fileName += ".png";
