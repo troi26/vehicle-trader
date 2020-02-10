@@ -36,7 +36,7 @@ export const BidsPreviewerView = (props) => {
 						<td
 							className={bid.offer.activeStatus ? "vt-active-offer" : "vt-closed-offer"}>
 							{bid.offer.activeStatus ? "Active offer" : "Closed offer"}</td>
-						<td>{bid.offer
+						<td>{(bid.offer && bid.offer.title)
 								? bid.offer.title.length > 40
 									? `${bid.offer.title.substr(0, 40)}...`
 									: bid.offer.title

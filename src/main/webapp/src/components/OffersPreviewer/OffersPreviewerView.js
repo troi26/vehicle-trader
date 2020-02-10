@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from "reactstrap";
+import {Badge, Table} from "reactstrap";
 import {buildDatesFromArray} from "../../DateParsers/DateParser";
 import Button from "reactstrap/es/Button";
 
@@ -10,7 +10,11 @@ export const OffersPreviewerView = (props) => {
         <div
             style={props.style}
         >
-
+            <Button
+                className={"vt-margin"}
+                color={"warning"}
+                onClick={props.openAddOffer}
+            >Add offer</Button>
             <Table striped>
                 <caption>My offers</caption>
                 <thead className="thead-dark">
@@ -32,7 +36,11 @@ export const OffersPreviewerView = (props) => {
                         key={`offer-row-${offer.id}`}
                     >
                         <th scope="row">{idx + 1}</th>
-                        <td><Button
+                        <td>
+                            {!offer.activeStatus &&
+                                <Badge color="danger" pill>Closed</Badge>
+                            }
+                            <Button
                             className={'vt-horiz-margin'}
                             onClick={(event) => props.onOpenOfferClick(offer, event)}
                         >
