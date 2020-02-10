@@ -1,7 +1,20 @@
 export const TAB_INDEXES = {
     OFFER_PREV: 'OFFER_PREV',
     OFFER_EDIT: 'OFFER_EDIT',
+
+    // All offers view
     OFFERS_LIST: 'OFFERS_LIST',
+
     BID_ADDITION: 'BID_ADDITION',
     BIDS_LIST: 'BIDS_LIST',
+
+    USER_EDIT: 'USER_EDIT',
+    USER_PREV: 'USER_PREV',
+
+    MY_BIDS: 'MY_BIDS',
+    MY_OFFERS: 'MY_OFFERS',
+    MY_ACCOUNT: 'MY_ACCOUNT',
+
+    CHAT_VIEW: 'CHAT_VIEW',
+    FORUM_VIEW: 'FORUM_VIEW',
 };
