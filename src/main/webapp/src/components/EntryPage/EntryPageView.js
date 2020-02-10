@@ -8,6 +8,10 @@ import {UserPrevContainer} from "../UserPrev/UserPrevContainer";
 import {UserEditContainer} from "../UserEdit/UserEditContainer";
 import {OffersPreviewerContainer} from "../OffersPreviewer/OffersPreviewerContainer";
 import {AllOffersPrevContainer} from "../AllOffersPrev/AllOffersPrevContainer";
+import {PendingUsersListContainer} from "../PendingUsersList/PendingUsersListContainer";
+import {UsersPreviewerContainer} from "../UsersPreviewer/UsersPreviewerContainer";
+import {RegistrationFormContainer} from "../RegistrationForm/RegistrationFormContainer";
+import {AddOfferContainer} from "../AddOffer/AddOfferContainer";
 
 export const EntryPageView = (props) => {
     if (props.loading) {
@@ -32,10 +36,18 @@ export const EntryPageView = (props) => {
                     <HeaderContainer
                         {...props}
                     />
-                    <LoginPageContainer
-                        {...props}
-                        onLogin={props.onLogin}
-                    />
+                    { props.viewIdx === TAB_INDEXES.LOGIN_VIEW &&
+                        <LoginPageContainer
+                            {...props}
+                            onLogin={props.onLogin}
+                            />
+                    }
+                    { props.viewIdx === TAB_INDEXES.REGISTER_VIEW &&
+                        <RegistrationFormContainer
+                            {...props}
+                            // onRegister={props.onRegister}
+                        />
+                    }
                 </div>
             );
         } else {
@@ -117,6 +129,39 @@ export const EntryPageView = (props) => {
                     }
                     { props.viewIdx === TAB_INDEXES.OFFERS_LIST &&
                         <AllOffersPrevContainer
+                            {...props}
+                            style={{
+                                margin: '0.5em',
+                                height: '33%',
+                                minHeight: `${window.innerHeight / 3}px`,
+                                overflowY: 'auto',
+                            }}
+                        />
+                    }
+                    { props.viewIdx === TAB_INDEXES.PENDING_ACCOUNTS_LIST &&
+                        <PendingUsersListContainer
+                            {...props}
+                            style={{
+                                margin: '0.5em',
+                                height: '33%',
+                                minHeight: `${window.innerHeight / 3}px`,
+                                overflowY: 'auto',
+                            }}
+                        />
+                    }
+                    { props.viewIdx === TAB_INDEXES.ALL_USERS_LIST &&
+                        <UsersPreviewerContainer
+                            {...props}
+                            style={{
+                                margin: '0.5em',
+                                height: '33%',
+                                minHeight: `${window.innerHeight / 3}px`,
+                                overflowY: 'auto',
+                            }}
+                        />
+                    }
+                    { props.viewIdx === TAB_INDEXES.ADD_OFFER &&
+                        <AddOfferContainer
                             {...props}
                             style={{
                                 margin: '0.5em',

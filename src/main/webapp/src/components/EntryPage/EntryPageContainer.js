@@ -16,14 +16,19 @@ export class EntryPageContainer extends Component {
             //     id: '5e3d9af1761f907cf28fa1b5',
             //     username: 'admin',
             // },
+            chatEn: true,
+            forumEn: false,
+
             loggedIn: {
-                id: '5e3aeb10831f801e447e5eb1',
+                id: '5e413dcdaf26cb6e279e4f4f',
+                // id: '5e3aeb10831f801e447e5eb1',
                 // username: 'admin',
                 // name: 'Admin',
                 // surname: 'Adminov',
                 // email: "admin@abv.bg",
                 // cashAmount: 123000,
                 // roles: "ROLE_ADMIN",
+                // roles: "ROLE_DEALER",
                 password: "",
             },
 
@@ -33,7 +38,7 @@ export class EntryPageContainer extends Component {
                 viewIdx: TAB_INDEXES.OFFERS_LIST,
             tabProps: {
                 offerId: "5e3eb8b89f1baf3f988ac92d",
-                userId: "5e3d9af1761f907cf28fa1b5"
+                userId: "5e3aeb10831f801e447e5eb1"
             },
 
             viewTransitions: [],
@@ -96,6 +101,20 @@ export class EntryPageContainer extends Component {
         });
     }
 
+    showRegisterHandler () {
+        this.setState({
+            viewIdx: TAB_INDEXES.REGISTER_VIEW,
+            loggedIn: null,
+        });
+    }
+
+    showLoginHandler () {
+        this.setState({
+            viewIdx: TAB_INDEXES.LOGIN_VIEW,
+            loggedIn: null,
+        });
+    }
+
     loginHandler (credentials, event) {
         login(event.target)
             .then((response) => {
@@ -123,7 +142,7 @@ export class EntryPageContainer extends Component {
     componentDidMount () {
         console.log("MOUNTING:");
         // this.checkForSession();
-        this.loadTestUser();
+        if (this.state.loggedIn) this.loadTestUser();
     }
 
     componentWillUnmount() {
@@ -199,6 +218,13 @@ export class EntryPageContainer extends Component {
         });
     }
 
+    // switchToUserPreview () {
+    //     console.log("switchToUserPreview");
+    //     this.setState({
+    //         viewIdx: TAB_INDEXES.USER_PREV,
+    //     });
+    // }
+
     finishEditingUserHandler (userId) {
         console.log("onFinishUserEditClick");
         this.setState({
@@ -257,6 +283,64 @@ export class EntryPageContainer extends Component {
         });
     }
 
+    pendingAccountsShowHandler () {
+        console.log("pendingAccountsShowClick");
+        this.setState({
+            viewIdx: TAB_INDEXES.PENDING_ACCOUNTS_LIST,
+            /*tabProps: {
+                ...this.state.tabProps,
+            },*/
+        });
+    }
+
+    allAccountsShowHandler () {
+        console.log("allAccountsShowClick");
+        this.setState({
+            viewIdx: TAB_INDEXES.ALL_USERS_LIST,
+            /*tabProps: {
+                ...this.state.tabProps,
+            },*/
+        });
+    }
+
+    chatOpenHandler (userId) {
+        console.log("chatOpenHandler");
+        this.setState({
+            viewIdx: TAB_INDEXES.CHAT_VIEW,
+            tabProps: {
+                ...this.state.tabProps,
+                chatWith: userId,
+            },
+        });
+    }
+
+    forumOpenHandler () {
+        console.log("forumOpenHandler");
+        this.setState({
+            viewIdx: TAB_INDEXES.FORUM_VIEW,
+            /*tabProps: {
+                ...this.state.tabProps,
+                chatWith: userId,
+            },*/
+        });
+    }
+
+    openUserProfile (userId) {
+        this.setState({
+            viewIdx: TAB_INDEXES.USER_PREV,
+            tabProps: {
+                ...this.state.tabProps,
+                userId: userId,
+            },
+        })
+    }
+
+    navigateToNewOfferForm () {
+        this.setState({
+            viewIdx: TAB_INDEXES.ADD_OFFER,
+        });
+    }
+
     render() {
 
         return (
@@ -271,6 +355,8 @@ export class EntryPageContainer extends Component {
                 onEditAttempt={this.editOfferClickHandler.bind(this)}
                 onSubmitOffer={this.submitOfferHandler.bind(this)}
 
+                onShowRegister={this.showRegisterHandler.bind(this)}
+                onShowLogin={this.showLoginHandler.bind(this)}
                 onLogin={this.loginHandler.bind(this)}
                 onLogout={this.logoutHandler.bind(this)}
 
@@ -290,6 +376,17 @@ export class EntryPageContainer extends Component {
 
                 onOpenMessengerClick={this.openMessengerHandler.bind(this)}
                 onOpenForumClick={this.openForumHandler.bind(this)}
+
+                onPendingAccountsShowClick={this.pendingAccountsShowHandler.bind(this)}
+                onAllAccountsShowClick={this.allAccountsShowHandler.bind(this)}
+
+                onChatOpenClick={this.chatOpenHandler.bind(this)}
+                onForumOpenClick={this.forumOpenHandler.bind(this)}
+
+
+                onOpenUserProfile={this.openUserProfile.bind(this)}
+
+                openAddOffer={this.navigateToNewOfferForm.bind(this)}
 
             />
         );
