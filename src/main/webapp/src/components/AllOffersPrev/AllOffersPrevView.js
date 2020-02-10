@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from "reactstrap";
+import {Badge, Table} from "reactstrap";
 import {buildDatesFromArray} from "../../DateParsers/DateParser";
 import Button from "reactstrap/es/Button";
 
@@ -36,13 +36,18 @@ export const AllOffersPrevView = (props) => {
                                 key={`offer-row-${offer.id}`}
                             >
                                 <th scope="row">{idx + 1}</th>
-                                <td><Button
+                                <td>
+                                    {!offer.activeStatus &&
+                                    <Badge color="danger" pill>Closed</Badge>
+                                    }<Button
                                     className={'vt-horiz-margin'}
                                     onClick={(event) => props.onOpenOfferClick(offer, event)}
                                 >
                                     Open
                                 </Button></td>
-                                <td>{`${author.name} ${author.surname}`}</td>
+                                <td>{author
+                                        ? `${author.name} ${author.surname}`
+                                        : "NA"}</td>
                                 <td>{buildDatesFromArray(offer.created_at).toLocaleString()}</td>
                                 <td>{buildDatesFromArray(offer.modified_at).toLocaleString()}</td>
                                 {!offer.photoUrl &&
