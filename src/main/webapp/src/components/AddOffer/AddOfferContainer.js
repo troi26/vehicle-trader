@@ -156,6 +156,16 @@ export class AddOfferContainer extends Component {
         });
     }
 
+    changeIncludedExcludedHandler (event) {
+        const fname = event.target.name;
+        this.setState({
+            offer: {
+                ...this.state.offer,
+                [fname]: !this.state.offer[fname],
+            },
+        });
+    }
+
     render() {
         return (
             <AddOfferView
@@ -166,6 +176,7 @@ export class AddOfferContainer extends Component {
                 onChangeRadio={this.changeRadioFieldHandler.bind(this)}
                 onSubmit={this.submitOfferValidation.bind(this)}
                 onChangeManufactDate={this.manufactDateFieldChangeHandler.bind(this)}
+                onChangeIncludedExcluded={this.changeIncludedExcludedHandler.bind(this)}
             />
         )
     }
