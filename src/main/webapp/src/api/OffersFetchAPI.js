@@ -20,6 +20,26 @@ export const postOffer = (offer) => {
     });
 };
 
+export const closeOffer = (offer) => {
+    return fetch(`${OFFERS.CLOSE_OFFER}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(offer),
+    });
+};
+
+export const finalizeOffer = (offer) => {
+    return fetch(`${OFFERS.FINALIZE_OFFER}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(offer),
+    });
+};
+
 export const putOffer = (offer) => {
     console.log("putOffer", offer);
     const JSONstrOffer = JSON.stringify(offer);
