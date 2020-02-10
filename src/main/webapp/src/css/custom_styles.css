@@ -86,10 +86,20 @@
 }
 
 .offer-small-img {
-    widht: 5em;
+    width: 5em;
     height: 5em;
 }
 
 .vt-flex-container {
     display: inline-flex;
+}
+
+#vt-reg-form .img-prev {
+    width: 10em;
+    height: 10em;
+}
+
+#vt-reg-form {
+    width: 50%;
+    height: 50%;
 }
