@@ -51,4 +51,7 @@ public class Offer {
     private boolean electronicMirrors = true;
     private int horsePower = -1;
 
+    private boolean activeStatus = true;
+
+    private String winnerId;
 }
