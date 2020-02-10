@@ -57,9 +57,16 @@ public class UsersServiceImpl implements UsersService {
                     String.format("User with ID=\"%s\" does not exist.", user.getId()));
         }
 
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
+        User oldU = old.get();
 
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        if (oldU.getPassword().equals(encoder.encode(""))) {
+            user.setPassword(oldU.getPassword());
+            return usersRepository.save(user);
+        }
+
+        user.setPassword(encoder.encode(user.getPassword()));
         return usersRepository.save(user);
     }
 
