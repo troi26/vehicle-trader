@@ -11,5 +11,9 @@ public interface UsersService {
     User create(User user);
     User update(User user);
     User delete(String id);
+    List<User> findInactiveAccounts();
+    List<User> findActiveAccounts();
+    List<User> findActiveAccountsNotMe(String userId);
+    List<User> findAllByIdNot(String exclId);
     Long getCount();
 }

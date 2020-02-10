@@ -39,12 +39,12 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public User create(User user) {
         if(user.getRoles() == null || user.getRoles().trim().length() == 0) {
-            user.setRoles("ROLE_BLOGGER");
+            user.setRoles("ROLE_BIDDER");
         }
 
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setActive(true);
+//        user.setActive(true);
         return usersRepository.insert(user);
     }
 
@@ -81,6 +81,26 @@ public class UsersServiceImpl implements UsersService {
         usersRepository.deleteById(id);
 
         return target.get();
+    }
+
+    @Override
+    public List<User> findInactiveAccounts() {
+        return usersRepository.findAllByActiveFalse();
+    }
+
+    @Override
+    public List<User> findActiveAccounts() {
+        return usersRepository.findAllByActiveTrue();
+    }
+
+    @Override
+    public List<User> findActiveAccountsNotMe(String userId) {
+        return usersRepository.findAllByActiveTrueAndIdNot(userId);
+    }
+
+    @Override
+    public List<User> findAllByIdNot(String exclId) {
+        return usersRepository.findAllByIdNot(exclId);
     }
 
     @Override
