@@ -55,8 +55,16 @@ export class OfferPrevContainer extends Component {
                     if (r.status === 200) {
                         r.json().then((winner) => this.successfulWinnerGetHandler(offer, winner))
                     } else {
+                        const dates = this.getDates(offer);
                         this.setState({
-                            offer: offer,
+                            offer: {
+                                ...offer,
+                                ...dates,
+                            },
+                            editedValues: {
+                                ...offer,
+                                ...dates,
+                            },
                             winner: null,
                         });
                     }
@@ -392,11 +400,19 @@ export class OfferPrevContainer extends Component {
     }
 
     updateOfferData (offer) {
+        const dates = this.getDates(offer);
         getUserById(offer.winnerId)
             .then(r => r.json())
             .then(winner => {
                 this.setState({
-                    offer: offer,
+                    offer: {
+                        ...offer,
+                        ...dates,
+                    },
+                    editedValues: {
+                        ...offer,
+                        ...dates,
+                    },
                     winner: winner,
                 })
             }).catch(reason => console.log(reason));
@@ -409,7 +425,7 @@ export class OfferPrevContainer extends Component {
     }
 
     finalizeDealHandler (offer) {
-        finalizeOffer(offer.id)
+        finalizeOffer(offer)
             .then(r => {
                 if (r.status === 200) {
                     r.json().then(this.updateOfferData.bind(this));
@@ -440,8 +456,6 @@ export class OfferPrevContainer extends Component {
                         }}
 
                         onSubmitOffer={this.submitOfferHandler.bind(this)}
-
-                        onOfferCloseOrFinalize={this.offerCloseOrFinalize.bind(this)}
 
                         onChangeTransmissionT={this.changeTransmissionTHandler.bind(this)}
                         onChangeUseStatus={this.changeUsedStatHandler.bind(this)}
@@ -477,6 +491,7 @@ export class OfferPrevContainer extends Component {
                         onSubmitBid={this.bidSubmitHandler.bind(this)}
 
                         onBidOfferAttempt={this.bidAttemptHandler.bind(this)}
+                        onOfferCloseOrFinalize={this.offerCloseOrFinalize.bind(this)}
                     />
                 );
             }
