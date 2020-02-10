@@ -71,9 +71,9 @@ public class UsersController {
             User user = usersService.findById(fileName);
 
             if (user.getAvatarUrl() != null && fileName.equals(user.getAvatarUrl().replaceFirst(".png", ""))) {
-                fileName += "_1.png";
+                fileName += "_user1.png";
             } else {
-                fileName += ".png";
+                fileName += "user.png";
             }
 
             if (Pattern.matches(".+\\.(jpg|png|jpeg)", files[0].getOriginalFilename())) {
