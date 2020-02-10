@@ -1,8 +1,12 @@
 package course.spring.vehtrader.web;
 
+import course.spring.vehtrader.domain.BidsService;
 import course.spring.vehtrader.domain.OffersService;
+import course.spring.vehtrader.domain.UsersService;
 import course.spring.vehtrader.exceptions.InvalidEntityException;
+import course.spring.vehtrader.model.Bid;
 import course.spring.vehtrader.model.Offer;
+import course.spring.vehtrader.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +14,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +29,12 @@ import java.util.regex.Pattern;
 public class OffersController {
     @Autowired
     private OffersService offerService;
+
+    @Autowired
+    private BidsService bidsService;
+
+    @Autowired
+    private UsersService usersService;
 
     @CrossOrigin
     @GetMapping
@@ -44,7 +56,7 @@ public class OffersController {
 
     @CrossOrigin
     @PostMapping
-    public Offer insertOffer(@RequestBody Offer offer){
+    public Offer insertOffer(@Valid @RequestBody Offer offer){
         return offerService.create(offer);
     }
 
@@ -55,6 +67,40 @@ public class OffersController {
             throw new InvalidEntityException(
                     String.format("Offer ID='%s' is different from URL resource ID='%s'", offer.getId(), id));
         }
+        return offerService.update(offer);
+    }
+//
+//    @CrossOrigin
+//    @PutMapping(path = "/close", params = "id")
+//    public Object closeOffer(@RequestParam("id") String id, @RequestBody Offer offer) {
+//        Bid winningBid = bidsService.findOfferWinningBid(offer.getId());
+//        if (winningBid != null) {
+//            User winner = usersService.findById(winningBid.getUserId());
+//            winner.setCashAmount(winner.getCashAmount() - winningBid.getValue());
+//            offer.setActiveStatus(false);
+//            offer.setWinnerId(winner.getId());
+//            usersService.update(winner);
+//        } else {
+//            return new ResponseEntity<String>("Can not be close. There is already a bid made", HttpStatus.CONFLICT);
+//        }
+//        ResponseEntity<Offer> response = new ResponseEntity<>(offer, HttpStatus.OK);
+//        return response;
+//    }
+
+    @CrossOrigin
+    @PutMapping(path = "/finalize")
+    public Offer finalizeOffer(@RequestBody Offer offer) {
+        Bid winningBid = bidsService.findOfferWinningBid(offer.getId());
+        if (winningBid != null) {
+            User winner = usersService.findById(winningBid.getUserId());
+            winner.setCashAmount(winner.getCashAmount() - winningBid.getValue());
+            offer.setActiveStatus(false);
+            offer.setWinnerId(winner.getId());
+            usersService.update(winner);
+        } else {
+            offer.setActiveStatus(false);
+        }
+//        ResponseEntity<Offer> response = new ResponseEntity<>(offer, HttpStatus.OK);
         return offerService.update(offer);
     }
 
