@@ -145,7 +145,7 @@ export const OfferPrevView = (props) => {
                                     Bid
                                 </Button>
                             }
-                            {props.loggedIn.id === props.offer.userId &&
+                            {props.loggedIn.id === props.offer.userId && props.bids.length === 0 &&
                             // TODO: Check if bid is already submitted and disable editing!
                                 <Button
                                     onClick={(event) => props.onEditAttempt(props.offer, event)}
@@ -153,6 +153,11 @@ export const OfferPrevView = (props) => {
                                     Edit
                                 </Button>
                             }
+                                {/*<Button
+                                    onClick={(event) => props.onBackClick(event)}
+                                >
+                                    Back
+                                </Button>*/}
                             { props.bidding && props.loggedIn.id !== props.offer.userId &&
                                 <BidInputView
                                     style={props.style}
@@ -163,6 +168,7 @@ export const OfferPrevView = (props) => {
                                     onSubmitBid={props.onSubmitBid}
                                 />
                             }
+
                         </Row>
                     </Container>
                     <Row

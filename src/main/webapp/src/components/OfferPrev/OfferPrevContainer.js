@@ -55,9 +55,15 @@ export class OfferPrevContainer extends Component {
 
     getDates (offer) {
         console.log(offer);
+        let manuf = offer.manufactured;
+        if (!manuf) {
+            manuf = new Date();
+        } else {
+            manuf = new Date(offer.manufactured[0], offer.manufactured[1] - 1, offer.manufactured[2],
+                12, 0, 0);
+        }
         return {
-            manufactured: new Date(offer.manufactured[0], offer.manufactured[1] - 1, offer.manufactured[2],
-                12, 0, 0),
+            manufactured: manuf,
             created_at: new Date(offer.created_at[0], offer.created_at[1] - 1, offer.created_at[2]
                 , offer.created_at[3], offer.created_at[4], offer.created_at[5]),
             modified_at: new Date(offer.modified_at[0], offer.modified_at[1] - 1, offer.modified_at[2]
@@ -87,6 +93,7 @@ export class OfferPrevContainer extends Component {
 
     componentDidMount () {
         console.log("componentDidMount");
+        console.log(this.props);
         if (!this.state.offer) {
             getOfferById(this.props.tabProps.offerId)
                 .then(response => {
@@ -367,7 +374,7 @@ export class OfferPrevContainer extends Component {
         if (this.state.loading) {
             return <Spinner />;
         } else {
-            if (this.props.tabIdx === TAB_INDEXES.OFFER_EDIT) {
+            if (this.props.viewIdx === TAB_INDEXES.OFFER_EDIT) {
 
                 return (
                     <OfferEditView
