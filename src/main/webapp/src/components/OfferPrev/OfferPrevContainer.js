@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {OfferPrevView} from "./OfferPrevView";
-import {getOfferById, putOffer, uploadPhoto} from "../../api/OffersFetchAPI";
+import {closeOffer, finalizeOffer, getOfferById, putOffer, uploadPhoto} from "../../api/OffersFetchAPI";
 import {TAB_INDEXES} from "../../NavigationConstants/constants";
 import {OfferEditView} from "./OfferEditView";
 import Spinner from "reactstrap/es/Spinner";
@@ -29,7 +29,7 @@ export class OfferPrevContainer extends Component {
         this.bidsStream= null;
     }
 
-    setOffer (offer) {
+    successfulWinnerGetHandler(offer, winner) {
         console.log("BEFORE state: ", offer);
         const dates = this.getDates(offer);
         console.log(dates);
@@ -39,12 +39,33 @@ export class OfferPrevContainer extends Component {
                 ...offer,
                 ...dates,
             },
+            winner: winner,
             editedValues: {
                 ...offer,
                 ...dates,
             },
             error: null,
         }, () => console.log("after state: ", this.state.offer));
+    }
+
+    setOffer (offer) {
+        if (offer.winnerId) {
+            getUserById(offer.winnerId)
+                .then(r => {
+                    if (r.status === 200) {
+                        r.json().then((winner) => this.successfulWinnerGetHandler(offer, winner))
+                    } else {
+                        this.setState({
+                            offer: offer,
+                            winner: null,
+                        });
+                    }
+                })
+                .catch(reason => console.log(reason));
+        } else {
+            console.log("ACTIVE OFFER");
+            this.successfulWinnerGetHandler(offer, null);
+        }
     }
 
     setAuthor (user) {
@@ -370,6 +391,38 @@ export class OfferPrevContainer extends Component {
         return null;
     }
 
+    updateOfferData (offer) {
+        getUserById(offer.winnerId)
+            .then(r => r.json())
+            .then(winner => {
+                this.setState({
+                    offer: offer,
+                    winner: winner,
+                })
+            }).catch(reason => console.log(reason));
+    }
+
+    finalizingFailedHandler (respObj) {
+        this.setState({
+            closingErr: "Finalizing failed",
+        });
+    }
+
+    finalizeDealHandler (offer) {
+        finalizeOffer(offer.id)
+            .then(r => {
+                if (r.status === 200) {
+                    r.json().then(this.updateOfferData.bind(this));
+                } else {
+                    r.json().then(this.finalizingFailedHandler.bind(this));
+                }
+            })
+    }
+
+    offerCloseOrFinalize (offer, event) {
+        this.finalizeDealHandler(offer);
+    }
+
     render() {
         if (this.state.loading) {
             return <Spinner />;
@@ -388,6 +441,7 @@ export class OfferPrevContainer extends Component {
 
                         onSubmitOffer={this.submitOfferHandler.bind(this)}
 
+                        onOfferCloseOrFinalize={this.offerCloseOrFinalize.bind(this)}
 
                         onChangeTransmissionT={this.changeTransmissionTHandler.bind(this)}
                         onChangeUseStatus={this.changeUsedStatHandler.bind(this)}

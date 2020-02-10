@@ -35,11 +35,24 @@ export const OfferPrevView = (props) => {
                                     fontWeight: 'bolder',
                                 }}
                             >{props.offer.title}</Col>
+                            { !props.offer.winnerId &&
                             <Col
                                 style={{
                                     fontWeight: 'normal',
                                 }}
                             ><b>Highest bid: </b>{props.highestBid ? props.highestBid : "There is still no bids"}</Col>
+                            }
+                            { props.offer.winnerId && props.winner &&
+                                <Col
+                                    style={{
+                                        fontWeight: 'normal',
+                                    }}
+                                    onClick={ () => console.log()
+                                        // TODO:
+                                    }
+                                ><b>Winner: </b>{`${props.winner.username}`}</Col>
+
+                            }
                         </Row>
                         <Row
                             className={'vt-margin'}
@@ -140,17 +153,29 @@ export const OfferPrevView = (props) => {
                         <Row>
                             {props.loggedIn.id !== props.offer.userId && !props.bidding &&
                                 <Button
+                                    className={"vt-horiz-margin"}
                                     onClick={(event) => props.onBidOfferAttempt(props.offer, event)}
                                 >
                                     Bid
                                 </Button>
                             }
                             {props.loggedIn.id === props.offer.userId && props.bids.length === 0 &&
+                            !props.winnerId &&
                             // TODO: Check if bid is already submitted and disable editing!
                                 <Button
+                                    className={"vt-horiz-margin"}
                                     onClick={(event) => props.onEditAttempt(props.offer, event)}
                                 >
                                     Edit
+                                </Button>
+                            }
+                            {props.loggedIn.roles === "ROLE_ADMIN" &&
+                            props.loggedIn.id === props.offer.userId && props.offer.activeStatus &&
+                                <Button
+                                    className={"vt-horiz-margin"}
+                                    onClick={(event) => {props.onOfferCloseOrFinalize(props.offer, event)}}
+                                >
+                                    {props.bids.length === 0 ? "Close" : "Finalize deal"}
                                 </Button>
                             }
                                 {/*<Button
@@ -158,7 +183,7 @@ export const OfferPrevView = (props) => {
                                 >
                                     Back
                                 </Button>*/}
-                            { props.bidding && props.loggedIn.id !== props.offer.userId &&
+                            { props.bidding && props.loggedIn.id !== props.offer.userId && props.offer.activeStatus &&
                                 <BidInputView
                                     style={props.style}
                                     offer={props.offer}
