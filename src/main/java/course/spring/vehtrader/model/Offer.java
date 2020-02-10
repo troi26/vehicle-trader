@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Document("offers")
@@ -27,10 +28,12 @@ public class Offer {
     private double startingPrice;
     @NotNull
     @NonNull
-    private String title = "Default title...";
+    @Size(min = 5)
+    private String title;
 
-    // If the vehicle is user or a new on
-    private boolean usedStatus = false;
+    @NotNull
+    @NonNull
+    private boolean usedStatus;
 
     private LocalDateTime created_at = LocalDateTime.now();
     private LocalDateTime modified_at = LocalDateTime.now();
@@ -40,17 +43,40 @@ public class Offer {
     private String engineType;
     @JsonEnumDefaultValue
     private Transmission transmissionType = Transmission.MANUAL;
-    private int kmRun = -1;
+    @NotNull
+    @NonNull
+    private int kmRun;
+
+    @NotNull
+    @NonNull
     private LocalDateTime manufactured;
+    @NotNull
+    @NonNull
+    @Size(min = 1)
     private String brand;
+    @NotNull
+    @NonNull
+    @Size(min = 1)
     private String model;
     private String address;
+    @NotNull
+    @NonNull
     private boolean climatic = true;
+    @NotNull
+    @NonNull
     private boolean leatherSeats = false;
+    @NotNull
+    @NonNull
     private boolean electronicWindows = true;
+    @NotNull
+    @NonNull
     private boolean electronicMirrors = true;
-    private int horsePower = -1;
+    @NotNull
+    @NonNull
+    private int horsePower;
 
+    @NotNull
+    @NonNull
     private boolean activeStatus = true;
 
     private String winnerId;

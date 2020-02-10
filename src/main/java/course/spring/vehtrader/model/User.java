@@ -48,15 +48,29 @@ public class User implements UserDetails {
     private double cashAmount;
     @NonNull
     @NotNull
-    @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$&%]).{5,16})")
+    @Pattern(regexp = "((?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$&%]).{5,16})",
+    message = "Password must contain at least " +
+            "one of lowercase, uppercase, digit, symbol(%,&,$,#) " +
+            "and at least 6 characters long")
     @JsonProperty(access = WRITE_ONLY)
     private String password;
     @NonNull
     @NotNull
-    private String roles = "ROLE_ADMIN";
+    private String roles = "ROLE_BIDDER";
     private boolean active = true;
     @URL
     private String avatarUrl;
+
+    public User (String username, String name, String surname, String email, Double cashAmount
+            , String password, String roles) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.cashAmount = cashAmount;
+        this.password = password;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
