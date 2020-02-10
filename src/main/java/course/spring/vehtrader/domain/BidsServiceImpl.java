@@ -10,6 +10,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
@@ -61,5 +63,17 @@ public class BidsServiceImpl implements BidsService {
     @Override
     public Mono<Long> getCount() {
         return repo.count();
+    }
+
+    @Override
+    public Bid findOfferWinningBid(String offerId) {
+        Long cnt = repo.countAllByOfferId(offerId).block();
+        if (cnt > 0) {
+            Flux<Bid> offerBids = repo.findByOfferIdOrderByValue(offerId).take(1);
+            Bid bid = offerBids.next().cast(Bid.class).block();
+            return bid;
+        }
+
+        return null;
     }
 }
