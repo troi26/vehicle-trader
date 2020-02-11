@@ -80,7 +80,8 @@ export const HeaderView = (props) => {
                                     </DropdownItem>*/}
                                     <DropdownItem divider/>
                                     <DropdownItem
-                                        href={"http://localhost:8080/perform_logout"}
+                                        href={"#"}
+                                        onClick={props.onLogout}
                                     >
                                         Logout
                                     </DropdownItem>
