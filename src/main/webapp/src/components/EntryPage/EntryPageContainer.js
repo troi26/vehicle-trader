@@ -13,38 +13,39 @@ export class EntryPageContainer extends Component {
         super(props);
 
         this.state = {
-            // loggedIn: {
-            //     id: '5e3d9af1761f907cf28fa1b5',
-            //     username: 'admin',
-            // },
             chatEn: true,
             forumEn: true,
+            // loggedIn: {
+            //     // id: '5e413dcdaf26cb6e279e4f4f',
+            //     id: '5e3aeb10831f801e447e5eb1',
+            //     // username: 'admin',
+            //     // name: 'Admin',
+            //     // surname: 'Adminov',
+            //     // email: "admin@abv.bg",
+            //     // cashAmount: 123000,
+            //     // roles: "ROLE_ADMIN",
+            //     // roles: "ROLE_DEALER",
+            //     password: "",
+            // },
 
-            loggedIn: {
-                // id: '5e413dcdaf26cb6e279e4f4f',
-                id: '5e3aeb10831f801e447e5eb1',
-                // username: 'admin',
-                // name: 'Admin',
-                // surname: 'Adminov',
-                // email: "admin@abv.bg",
-                // cashAmount: 123000,
-                // roles: "ROLE_ADMIN",
-                // roles: "ROLE_DEALER",
-                password: "",
-            },
-
-            // loggedIn: null,
+            loggedIn: null,
             loading: false,
 
-            viewIdx: TAB_INDEXES.ALL_USERS_LIST,
+            viewIdx: TAB_INDEXES.OFFERS_LIST,
 
             tabProps: {
-                offerId: "5e3eb8b89f1baf3f988ac92d",
-                userId: "5e3aeb10831f801e447e5eb1",
-                chatReceiverId: "5e4147ac51f6c063ce31b1cb",
+                // offerId: "5e3eb8b89f1baf3f988ac92d",
+                // userId: "5e3aeb10831f801e447e5eb1",
+                // chatReceiverId: "5e4147ac51f6c063ce31b1cb",
+                offerId: "",
+                userId: "",
+                chatReceiverId: "",
                 page: null,
             },
 
+            loginErrors: null,
+
+            // TODO GO BACK TO PREVIOUS VIEW
             viewTransitions: [],
         };
 
@@ -90,18 +91,9 @@ export class EntryPageContainer extends Component {
 
     checkForSession () {
         getLoggedUser()
-            .then(response => {
-                console.log(response);
-                if (response.redirected === true) {
-                    throw "Not signed in";
-                } else {
-                    return response.json();
-                }
-            })
-            .then(response => {
-                console.log(response);
-                this.setLoggedIn(response);
-            })
+            .then((r) => r.status === 200
+                ? r.json().then(this.setLoggedIn.bind(this))
+                : r.json().then(this.setLoggedInToNull.bind(this)))
             .catch(reason => {
                 this.setLoggedIn(null);
                 console.log(reason);
@@ -113,7 +105,8 @@ export class EntryPageContainer extends Component {
         this.setState({
             loggedIn: logged,
             loading: false,
-        });
+            loginErrors: null,
+        }, () => console.log(this.state.loginErrors));
     }
 
     showRegisterHandler () {
@@ -132,32 +125,32 @@ export class EntryPageContainer extends Component {
 
     loginHandler (credentials, event) {
         login(event.target)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then(response => {
-                console.log(response);
-                this.setLoggedIn(response);
-            })
+            .then((r) => r.status === 200
+                ? r.json().then(this.setLoggedIn.bind(this))
+                : r.json().then(this.setLoggedInToNull.bind(this)))
             .catch((reason) => console.log(reason));
     }
 
+    setLoggedInToNull (response) {
+        console.log("setLoggedInToNull", response);
+        this.setState({
+            loggedIn: null,
+            loginErrors: response.exception,
+        });
+    }
 
     logoutHandler () {
         logout()
-            .then(response => response.json())
-            .then((response) => {
-                console.log(response);
-                this.setLoggedIn(null);
-            })
+            .then(response => response.status === 200
+                ? response.json().then(this.setLoggedInToNull.bind(this))
+                : () => {console.log("LOGOUT FAILED")})
             .catch(reason => console.log(reason))
     }
 
     componentDidMount () {
         console.log("MOUNTING:");
-        // this.checkForSession();
-        if (this.state.loggedIn) this.loadTestUser();
+        this.checkForSession();
+        // if (this.state.loggedIn) this.loadTestUser();
     }
 
     componentWillUnmount() {
@@ -233,13 +226,6 @@ export class EntryPageContainer extends Component {
         });
     }
 
-    // switchToUserPreview () {
-    //     console.log("switchToUserPreview");
-    //     this.setState({
-    //         viewIdx: TAB_INDEXES.USER_PREV,
-    //     });
-    // }
-
     finishEditingUserHandler (userId) {
         console.log("onFinishUserEditClick");
         this.setState({
@@ -272,9 +258,6 @@ export class EntryPageContainer extends Component {
         console.log("showAllOffersHandler");
         this.setState({
             viewIdx: TAB_INDEXES.OFFERS_LIST,
-            /*tabProps: {
-                ...this.state.tabProps,
-            },*/
         });
     }
 
@@ -282,9 +265,6 @@ export class EntryPageContainer extends Component {
         console.log("openMessengerHandler");
         this.setState({
             viewIdx: TAB_INDEXES.CHAT_VIEW,
-            /*tabProps: {
-                ...this.state.tabProps,
-            },*/
         });
     }
 
@@ -292,9 +272,6 @@ export class EntryPageContainer extends Component {
         console.log("openForumHandler");
         this.setState({
             viewIdx: TAB_INDEXES.FORUM_VIEW,
-            /*tabProps: {
-                ...this.state.tabProps,
-            },*/
         });
     }
 
@@ -302,9 +279,6 @@ export class EntryPageContainer extends Component {
         console.log("pendingAccountsShowClick");
         this.setState({
             viewIdx: TAB_INDEXES.PENDING_ACCOUNTS_LIST,
-            /*tabProps: {
-                ...this.state.tabProps,
-            },*/
         });
     }
 
@@ -312,9 +286,6 @@ export class EntryPageContainer extends Component {
         console.log("allAccountsShowClick");
         this.setState({
             viewIdx: TAB_INDEXES.ALL_USERS_LIST,
-            /*tabProps: {
-                ...this.state.tabProps,
-            },*/
         });
     }
 
@@ -333,10 +304,6 @@ export class EntryPageContainer extends Component {
         console.log("forumOpenHandler");
         this.setState({
             viewIdx: TAB_INDEXES.FORUM_VIEW,
-            /*tabProps: {
-                ...this.state.tabProps,
-                chatWith: userId,
-            },*/
         });
     }
 
