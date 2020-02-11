@@ -90,7 +90,7 @@ export const RegistrationFormView = (props) => {
                 </FormText>
             </FormGroup>
             <FormGroup>
-                <legend>Radio Buttons</legend>
+                <legend>Select role</legend>
                 <FormGroup check>
                     <Label check>
                         <Input type="radio" name="roles" value={"ROLE_ADMIN"} onChange={props.onRadioButtonChange}
