@@ -1,8 +1,7 @@
-
 import React, { Component } from 'react';
 
 import {ForumAllPreviewerView} from "./ForumAllPreviewerView";
-import {getAllForumPages, getOffersByUserId, postOffer} from "../../api/ForumFetchAPI";
+import {getAllForumPages} from "../../api/ForumFetchAPI";
 
 export class ForumAllPreviewerContainer extends Component {
     constructor (props) {
@@ -10,6 +9,7 @@ export class ForumAllPreviewerContainer extends Component {
 
         this.state = {
             forumPages: [],
+            currentTopic: [],
         };
 
         this.interval = null;
@@ -29,6 +29,10 @@ export class ForumAllPreviewerContainer extends Component {
 
     componentWillUnmount() {
         
+    }
+
+    onOpenTopic (topic) {
+
     }
 
     render() {
