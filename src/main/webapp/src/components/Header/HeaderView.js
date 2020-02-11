@@ -38,6 +38,11 @@ export const HeaderView = (props) => {
                                 <NavLink href="#"
                                          onClick={props.onAllAccountsShowClick}>All accounts</NavLink>
                             </NavItem>
+                            <NavItem>
+                            <NavLink href="#"
+                                     onClick={(event) => props.onOpenForumClick(props.loggedIn.id, event)}>
+                                Forum</NavLink>
+                            </NavItem>
                         </Nav>
                         <Nav className="mr-right" navbar>
                             <UncontrolledDropdown nav inNavbar>
@@ -69,10 +74,10 @@ export const HeaderView = (props) => {
                                         onClick={(event) => props.onOpenMessengerClick(props.loggedIn.id, event)}>
                                         Chat
                                     </DropdownItem>
-                                    <DropdownItem
+                                    {/*<DropdownItem
                                         onClick={(event) => props.onOpenForumClick(props.loggedIn.id, event)}>
                                         My posts
-                                    </DropdownItem>
+                                    </DropdownItem>*/}
                                     <DropdownItem divider/>
                                     <DropdownItem
                                         href={"http://localhost:8080/perform_logout"}
