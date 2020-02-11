@@ -7,17 +7,15 @@ import {BidsPreviewerContainer} from "../BidsPreviewer/BidsPreviewerContainer";
 import {UserPrevContainer} from "../UserPrev/UserPrevContainer";
 import {UserEditContainer} from "../UserEdit/UserEditContainer";
 import {OffersPreviewerContainer} from "../OffersPreviewer/OffersPreviewerContainer";
-<<<<<<< HEAD
-import {ForumPagePreviewerContainer} from "../ForumPreviewer/ForumPagePreviewerContainer";
-import {ForumAllPreviewerContainer} from "../ForumPreviewer/ForumAllPreviewerContainer";
-import {ChatPreviewerContainer} from "../ChatPreviewer/ChatPreviewerContainer";
-=======
 import {AllOffersPrevContainer} from "../AllOffersPrev/AllOffersPrevContainer";
 import {PendingUsersListContainer} from "../PendingUsersList/PendingUsersListContainer";
 import {UsersPreviewerContainer} from "../UsersPreviewer/UsersPreviewerContainer";
 import {RegistrationFormContainer} from "../RegistrationForm/RegistrationFormContainer";
 import {AddOfferContainer} from "../AddOffer/AddOfferContainer";
->>>>>>> merge-test
+import {ChatPreviewerContainer} from "../ChatPreviewer/ChatPreviewerContainer";
+import {ForumAllPreviewerContainer} from "../ForumPreviewer/ForumAllPreviewerContainer";
+import {FORUM_PAGES} from "../../NavigationConstants/ForumNavConsts";
+import {ForumPagePreviewerContainer} from "../ForumPreviewer/ForumPagePreviewerContainer";
 
 export const EntryPageView = (props) => {
     if (props.loading) {
@@ -67,34 +65,6 @@ export const EntryPageView = (props) => {
                     <HeaderContainer
                         {...props}
                     />
-<<<<<<< HEAD
-                    <BidsPreviewerContainer
-                        {...props}
-                        style={{
-                            margin: '0.5em',
-                            minHeight: `${window.innerHeight / 3}px`,
-                            height: '33%',
-                            overflowY: 'auto',
-                        }}/>
-                    <ForumAllPreviewerContainer
-                        {...props}
-                        style={{
-                            margin: '0.5em',
-                            height: '33%',
-                            minHeight: `${window.innerHeight / 3}px`,
-                            overflowY: 'auto',
-                        }}
-                    />
-                    <ChatPreviewerContainer
-                        {...props}
-                        style={{
-                            margin: '0.5em',
-                            height: '33%',
-                            minHeight: `${window.innerHeight / 3}px`,
-                            overflowY: 'auto',
-                        }}
-                    />
-=======
                     { (props.viewIdx === TAB_INDEXES.OFFER_PREV || props.viewIdx === TAB_INDEXES.OFFER_EDIT) &&
                         <OfferPrevContainer
                             {...props}
@@ -205,7 +175,39 @@ export const EntryPageView = (props) => {
                             }}
                         />
                     }
->>>>>>> merge-test
+                    { props.viewIdx === TAB_INDEXES.CHAT_VIEW &&
+                        <ChatPreviewerContainer
+                            {...props}
+                            style={{
+                                margin: '0.5em',
+                                height: '33%',
+                                minHeight: `${window.innerHeight / 3}px`,
+                                overflowY: 'hidden',
+                            }}
+                        />
+                    }
+                    { props.viewIdx === TAB_INDEXES.FORUM_VIEW &&
+                        <ForumAllPreviewerContainer
+                            {...props}
+                            style={{
+                                margin: '0.5em',
+                                height: '33%',
+                                minHeight: `${window.innerHeight / 3}px`,
+                                overflowY: 'hidden',
+                            }}
+                        />
+                    }
+                    { props.viewIdx === FORUM_PAGES.POST_PREV &&
+                        <ForumPagePreviewerContainer
+                            {...props}
+                            style={{
+                                margin: '0.5em',
+                                height: '33%',
+                                minHeight: `${window.innerHeight / 3}px`,
+                                overflowY: 'hidden',
+                            }}
+                        />
+                    }
                 </div>
             );
         }

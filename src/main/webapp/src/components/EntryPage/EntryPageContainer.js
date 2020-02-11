@@ -1,40 +1,28 @@
 import React, { Component } from 'react';
 
-<<<<<<< HEAD
-import {EntryPageView} from "./EntryPageView";
-import {getLoggedUser, login, logout} from "../../api/SecurityFetchAPI";
-import '../../css/chat.css';
-import '../../css/forum.css';
-=======
 import {getAllUsers, getUserById} from '../../api/UsersFetchAPI';
 import {EntryPageView} from "./EntryPageView";
 import {getLoggedUser, login, logout} from "../../api/SecurityFetchAPI";
 
 import "../../css/custom_styles.css";
 import {TAB_INDEXES} from "../../NavigationConstants/constants";
+import {FORUM_PAGES} from "../../NavigationConstants/ForumNavConsts";
 
->>>>>>> merge-test
 export class EntryPageContainer extends Component {
     constructor (props) {
         super(props);
 
         this.state = {
-<<<<<<< HEAD
-            loggedIn: {
-                id: '5e35c1701dc6010fac896bd9',
-                username: 'admin',
-            },
-=======
             // loggedIn: {
             //     id: '5e3d9af1761f907cf28fa1b5',
             //     username: 'admin',
             // },
             chatEn: true,
-            forumEn: false,
+            forumEn: true,
 
             loggedIn: {
-                id: '5e413dcdaf26cb6e279e4f4f',
-                // id: '5e3aeb10831f801e447e5eb1',
+                // id: '5e413dcdaf26cb6e279e4f4f',
+                id: '5e3aeb10831f801e447e5eb1',
                 // username: 'admin',
                 // name: 'Admin',
                 // surname: 'Adminov',
@@ -45,20 +33,33 @@ export class EntryPageContainer extends Component {
                 password: "",
             },
 
->>>>>>> merge-test
             // loggedIn: null,
             loading: false,
 
-                viewIdx: TAB_INDEXES.OFFERS_LIST,
+            viewIdx: TAB_INDEXES.ALL_USERS_LIST,
+
             tabProps: {
                 offerId: "5e3eb8b89f1baf3f988ac92d",
-                userId: "5e3aeb10831f801e447e5eb1"
+                userId: "5e3aeb10831f801e447e5eb1",
+                chatReceiverId: "5e4147ac51f6c063ce31b1cb",
+                page: null,
             },
 
             viewTransitions: [],
         };
 
         this.interval = null;
+    }
+
+    showPagePosts (page) {
+        console.log("showPagePosts", page);
+        this.setState({
+            viewIdx: FORUM_PAGES.POST_PREV,
+            tabProps: {
+                ...this.state.tabProps,
+                page: page,
+            },
+        })
     }
 
     loadTestUser () {
@@ -156,10 +157,7 @@ export class EntryPageContainer extends Component {
     componentDidMount () {
         console.log("MOUNTING:");
         // this.checkForSession();
-<<<<<<< HEAD
-=======
         if (this.state.loggedIn) this.loadTestUser();
->>>>>>> merge-test
     }
 
     componentWillUnmount() {
@@ -326,7 +324,7 @@ export class EntryPageContainer extends Component {
             viewIdx: TAB_INDEXES.CHAT_VIEW,
             tabProps: {
                 ...this.state.tabProps,
-                chatWith: userId,
+                chatReceiverId: userId,
             },
         });
     }
@@ -404,6 +402,8 @@ export class EntryPageContainer extends Component {
                 onOpenUserProfile={this.openUserProfile.bind(this)}
 
                 openAddOffer={this.navigateToNewOfferForm.bind(this)}
+
+                onShowPagePosts={this.showPagePosts.bind(this)}
 
             />
         );
