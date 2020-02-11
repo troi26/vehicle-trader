@@ -1,11 +1,16 @@
 import React from "react";
-import {Button, Col, Container, Form, FormGroup, Input, Label} from "reactstrap";
+import {Alert, Button, Col, Container, Form, FormGroup, Input, Label} from "reactstrap";
 
 export const LoginFormView = (props) => {
-    // console.log(props);
     return (
         <Container className="App">
             <h2>Log In</h2>
+            { props.loginErrors &&
+                <Alert color="danger">
+                    {props.loginErrors}
+                </Alert>
+            }
+
             <Form className="form" onSubmit={props.onSubmit}>
                 <Col>
                     <FormGroup>

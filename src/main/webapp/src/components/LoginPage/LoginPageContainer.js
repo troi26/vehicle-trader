@@ -37,6 +37,7 @@ export class LoginPageContainer extends Component{
     render() {
         return (
             <LoginPageView
+                {...this.props}
                 style={{
                     ...this.props.style,
                 }}
