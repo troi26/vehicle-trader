@@ -6,4 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface ForumRepository extends MongoRepository<ForumPage, String> {
+    public Optional<ForumPage> findByTopic(String topic);
 }
