@@ -23,7 +23,7 @@ public class ForumController {
 
     @GetMapping("{topic}")
     public ForumPage getForumPageByTopic(@PathVariable String topic) {
-        return forumService.findById(topic);
+        return forumService.findByTopic(topic);
     }
 
 //    @GetMapping(params = "id")

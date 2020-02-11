@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface ForumService {
     List<ForumPage> findAll();
     ForumPage findById(String id);
+    ForumPage findByTopic(String id);
     ForumPage create(ForumPage forumPage);
     ForumPage update(ForumPage forumPage);
     ForumPage delete(String id);
