@@ -12,3 +12,13 @@
     border-radius: 10px;
     background-color: lightgray;
 }
+
+.vk-post-expansion {
+    max-width: 80%;
+    width: 80%;
+    margin: 10%;
+}
+
+.vk-clickable {
+    cursor: pointer;
+}
