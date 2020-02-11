@@ -5,6 +5,7 @@ import Spinner from "reactstrap/es/Spinner";
 import CardImg from "reactstrap/es/CardImg";
 import Button from "reactstrap/es/Button";
 import {TAB_INDEXES} from "../../NavigationConstants/constants";
+import StarRatingComponent from "react-star-rating-component";
 
 export const UserPrevView = (props) => {
     console.log(props);
@@ -48,25 +49,26 @@ export const UserPrevView = (props) => {
                                     : "no_avatar.png" }`}
                             />
                         </Col>
-                        <Col><Row
-                            className={'vt-row'}
-                        >
-                            <Col><label
-                                className={'font-weight-bold'}
-                            >Username: </label> {props.user.username}</Col>
-                            <Col><label
-                                className={'font-weight-bold'}
-                            >E-mail: </label> {props.user.email}</Col>
-                            <Col><label
-                                className={'font-weight-bold'}
-                            >Role: </label> {props.user.roles.replace("ROLE_", "") === "ADMIN"
-                                ? "ADMIN"
-                                : props.user.roles.replace("ROLE_", "") === "DEALER"
-                                    ? "DEALER"
-                                    : "BIDDER"}
-                            </Col>
-                            <Col></Col>
-                        </Row>
+                        <Col>
+                            <Row
+                                className={'vt-row'}
+                            >
+                                <Col><label
+                                    className={'font-weight-bold'}
+                                >Username: </label> {props.user.username}</Col>
+                                <Col><label
+                                    className={'font-weight-bold'}
+                                >E-mail: </label> {props.user.email}</Col>
+                                <Col><label
+                                    className={'font-weight-bold'}
+                                >Role: </label> {props.user.roles.replace("ROLE_", "") === "ADMIN"
+                                    ? "ADMIN"
+                                    : props.user.roles.replace("ROLE_", "") === "DEALER"
+                                        ? "DEALER"
+                                        : "BIDDER"}
+                                </Col>
+                                <Col></Col>
+                            </Row>
                             <Row
                                 className={'vt-row'}
                             >
@@ -80,6 +82,34 @@ export const UserPrevView = (props) => {
                                     className={'font-weight-bold'}
                                 >Account: </label> {props.user.cashAmount}</Col>
                                 <Col></Col>
+                            </Row>
+                            <Row
+                                className={'vt-row'}
+                            >
+                                <Col>
+                                    <h5>Overall rating:</h5>
+                                    <StarRatingComponent
+                                        name={`rate ${props.user.username}`}
+                                        starCount={5}
+                                        value={props.overallRating}
+                                        editing={false}
+                                    />
+                                </Col>
+                                { props.loggedIn.id !== props.user.id &&
+                                    <Col>
+                                        <h5>Rate:</h5>
+                                        <StarRatingComponent
+                                            name={`rate ${props.user.username}`}
+                                            starCount={5}
+                                            value={(() => {
+                                                console.log(props.rating);
+                                                return props.rating;
+                                            })()}
+                                            editing={true}
+                                            onStarClick={props.onRateClick.bind(this)}
+                                        />
+                                    </Col>
+                                }
                             </Row>
                         </Col>
                     </Row>

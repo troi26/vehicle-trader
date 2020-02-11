@@ -8,6 +8,7 @@ import {TAB_INDEXES} from "../../NavigationConstants/constants";
 import {getOfferById} from "../../api/OffersFetchAPI";
 import {getBidsByOfferId} from "../../api/BidsFetchAPI";
 import {ApiErrorPrevView} from "../ApiErrorPrev/ApiErrorPrevView";
+import {getUserRatingByGraderId, getUserRatingById, postUserRating} from "../../api/RatingFetchAPI";
 
 export class UserPrevContainer extends Component {
     constructor (props) {
@@ -17,16 +18,53 @@ export class UserPrevContainer extends Component {
             user: null,
             error: null,
             loading: true,
+            rating: null,
+            overallRating: 0,
         };
 
         this.interval = null;
     }
 
-    setUser (user) {
+    loadRatingByMe () {
+        console.log("loadRatingByMe");
+        getUserRatingByGraderId(this.state.user.id, this.props.loggedIn.id)
+            .then(r => r.status
+                ? r.json().then((rating) => {
+                    this.setState({
+                        rating: rating.length > 0 ? rating[rating.length - 1].numStars : 0,
+                    });
+                })
+                : r.json().then(() => {
+                    this.setState({
+                        rating: 0,
+                    });
+                })).catch(reason => console.log(reason))
+    }
+
+    setUserAndRating (user, overallR) {
+        console.log("RATING LOADED: ", user, overallR);
         this.setState({
             user: user,
+            overallRating: isNaN(overallR) ? 0 : overallR,
             loading: false,
         });
+
+        if (user.id !== this.props.loggedIn.id) {
+            this.loadRatingByMe();
+        }
+    }
+
+    setUser (user) {
+        getUserRatingById(user.id)
+            .then(r => r.status === 200
+                ? r.json().then((rating) => this.setUserAndRating(user, rating))
+                : r.json().then((errors) => {
+                    console.log(errors)
+                    this.setState({
+                        user: user,
+                        loading: false,
+                    });
+                }))
     }
 
     componentDidMount () {
@@ -50,6 +88,38 @@ export class UserPrevContainer extends Component {
             });
     }
 
+    gradeSuccessHandler (rating) {
+        console.log("gradeSuccessHandler", rating);
+        this.setState({
+            rating: rating.numStars,
+        });
+    }
+
+    gradeFailure (errors) {
+        console.log("gradeFailure", errors);
+        this.setState({
+            user: {
+                ...this.state.user,
+                rate: this.state.user.rating,
+            },
+        })
+    }
+
+    rateUserHandler (rate) {
+        const grade = {
+            graderUserId: this.props.loggedIn.id,
+            evaluatedUserId: this.state.user.id,
+            comment: `${this.props.loggedIn.id} rates you with ${rate} stars.`,
+            numStars: rate,
+        };
+
+        postUserRating(grade)
+            .then(r => r.status === 200
+                ? r.json().then(this.gradeSuccessHandler.bind(this))
+                : r.json().then(this.gradeFailure.bind(this)))
+            .catch(reason => console.log(reason));
+    }
+
     componentWillUnmount() {
         clearInterval(this.interval);
         this.interval = null;
@@ -62,22 +132,6 @@ export class UserPrevContainer extends Component {
             if (user.id === this.props.loggedIn.id) {
                 this.prop.onUpdateUserGlobally(user);
             }
-        });
-    }
-
-    submitHandler (user) {
-        updateUser(user).then(r => {
-            if (r.status === 200) {
-                return r.json();
-            }
-            throw "Unsuccessful user update";
-        }).then(user => {
-            this.onSuccessfulHandler(user);
-
-        }).catch(reason => {
-            this.setState({
-                error: reason,
-            });
         });
     }
 
@@ -116,6 +170,7 @@ export class UserPrevContainer extends Component {
 
                     onEditAttempt={this.props.onUserEditClick}
                     onDeactivateAccClick={this.deactivateAccClick.bind(this)}
+                    onRateClick={this.rateUserHandler.bind(this)}
                 />
             );
         }
