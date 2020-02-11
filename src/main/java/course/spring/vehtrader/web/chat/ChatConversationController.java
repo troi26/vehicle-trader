@@ -37,6 +37,15 @@ public class ChatConversationController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(path = "/channel/{senderId}/{receiverId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ChatMessage> getChatConversationByChannelIds(@PathVariable String senderId,
+                                                         @PathVariable String receiverId) {
+        return chatConversationService.findByChannelIdIdOrByChannelId(
+                String.format("%s%s", senderId, receiverId),
+                String.format("%s%s", receiverId, senderId));
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "/senderAndReceiver/{senderId}/{receiverId}", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<ChatMessage> getChatConversationByUserId(@PathVariable String senderId, @PathVariable String receiverId) {
         return chatConversationService.findBySenderAndReceiverId(senderId, receiverId);
@@ -45,6 +54,8 @@ public class ChatConversationController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping
     public Mono<ChatMessage> insertChatConversation(@Valid @RequestBody ChatMessage chatConversation) {
+        chatConversation.setChannelId(String.format("%s%s",
+                chatConversation.getSenderId(), chatConversation.getReceiverId()));
         return chatConversationService.create(chatConversation);
     }
 

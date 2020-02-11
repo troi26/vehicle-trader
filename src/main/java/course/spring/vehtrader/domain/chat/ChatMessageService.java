@@ -19,5 +19,7 @@ public interface ChatMessageService {
 
     Flux<ChatMessage> findByChannelId(String channelId);
 
+    Flux<ChatMessage> findByChannelIdIdOrByChannelId(String channelId1, String channelId2);
+
     Mono<Long> getCount();
 }

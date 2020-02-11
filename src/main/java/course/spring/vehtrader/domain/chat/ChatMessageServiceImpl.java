@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ChatMessageServiceImpl implements ChatMessageService {
 
@@ -36,6 +39,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         return chatConversationRepository.save(chatConversation);
     }
 
+
+
     @Override
     public Mono<ChatMessage> delete(String id) {
         return chatConversationRepository.findById(id)
@@ -57,6 +62,14 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     @Override
     public Flux<ChatMessage> findByChannelId(String channelId) {
         return chatConversationRepository.findByChannelId(channelId);
+    }
+
+    @Override
+    public Flux<ChatMessage> findByChannelIdIdOrByChannelId(String channelId1, String channelId2) {
+        List<String> channelIds = new ArrayList<>();
+        channelIds.add(channelId1);
+        channelIds.add(channelId2);
+        return chatConversationRepository.findByChannelIdIsIn(channelIds);
     }
 
     @Override
