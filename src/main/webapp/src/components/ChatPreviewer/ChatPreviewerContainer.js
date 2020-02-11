@@ -1,59 +1,107 @@
 import React, { Component } from 'react';
 import { ChatPreviewerView } from './ChatPreviewerView';
 //TODO: see what methods are needed
-import {getChatsOnChannel, postChatMessage} from "../../api/ChatFetchAPI";
+import {getChatsOnChannel, getChatsOnChannelIds, postChatMessage} from "../../api/ChatFetchAPI";
+import "../../css/chat.css";
+import "../../css/forum.css";
+import {getUserById} from "../../api/UsersFetchAPI";
 
 export class ChatPreviewerContainer extends Component {
+	static DEFAULT_MSG = {
+		author: 'me',
+		type: 'text',
+		data: {
+			text: 'ME some text'
+		}
+	};
+	static DEFAULT_RCV_MSG = {
+		author: 'them',
+		type: 'text',
+		data: {
+			text: 'THEM some text'
+		}
+	};
+
 	constructor (props) {
 		super(props);
 
 		this.state = {
-			chatMessages: [
-				{	
-					channelId: "mychannel",
-					receiverId: "5e35c1701dc6010fac896bd9",
-					senderId: "5e39f3a30900f80b4ecde437",
-					senderUsername: this.props.loggedIn.username,
-					message: "hello",
-					messageDateTime: "2020-02-10 10:00:00"
-				},
-                {
-					channelId: "mychannel",
-					receiverId: "5e39f3a30900f80b4ecde437",
-					senderId: "5e35c1701dc6010fac896bd9",
-					senderUsername: "TOni",
-					message: "Hello to you too",
-					messageDateTime: "2020-02-10 10:00:05"
-				}
-            ],
+			messageList: [
+
+			],
+			receiverId: "5e4147ac51f6c063ce31b1cb",
+			receiver: null,
 		};
 
 		this.eventSource = null;
     }
-    
+
+	receiverSuccessfulLoaded (receiver) {
+		console.log("RECEIVER: ", receiver);
+		this.setState({
+			receiver: {
+				...receiver,
+			}
+		}, () =>
+			this.startEventListener())
+	}
+
+    processError (errors) {
+		console.log(errors);
+		// this.props.goBackWithError();
+	}
+
+    loadReceiver () {
+		getUserById(this.props.tabProps.chatReceiverId)
+			.then(r => r.status === 200
+				? r.json().then(this.receiverSuccessfulLoaded.bind(this))
+				: r.json().then(this.processError.bind(this)))
+			.catch(reason => console.log(reason));
+	}
 
     componentDidMount() {
 		console.log("componentDidMount");
-		this.startEventListener();
+		this.loadReceiver();
 
 		// setTimeout(this.addNewChatToState, 3000);
 		// setTimeout(this.addNewChatToState, 10000);
 	}
 
-    addNewChatToState (chat) {
+    addNewMsgToState (msg) {
+		let message;
+		if (msg.senderId === this.props.loggedIn.id) {
+			message = {
+				...msg,
+				...ChatPreviewerContainer.DEFAULT_MSG,
+				data: {
+					text: msg.message,
+				},
+			};
+		} else {
+			message = {
+				...msg,
+				...ChatPreviewerContainer.DEFAULT_RCV_MSG,
+				data: {
+					text: msg.message,
+				},
+			};
+		}
 		this.setState({
-			chatMessages: this.state.chatMessages.concat([chat]),
+			messageList: this.state.messageList.concat([message]),
 		});
     }
     
     startEventListener () {
 		if(typeof(EventSource) !== "undefined") {
 			if (this.eventSource === null) {
-				this.eventSource = getChatsOnChannel("mychat");
+				this.eventSource = getChatsOnChannelIds(
+					this.props.loggedIn.id,
+					this.props.tabProps.chatReceiverId
+				);
 				this.eventSource.onmessage = (event) => {
 					const newData = JSON.parse(event.data);
 					console.log("chat response: " + newData);
-					this.addNewChatToState(newData);
+					this.addNewMsgToState(newData);
 				};
 			}
 		} else {
@@ -61,26 +109,46 @@ export class ChatPreviewerContainer extends Component {
 		}
 	}
 
-	handleSend (event){
-		event.preventDefault();
+	errorSendHandler (errors) {
+		console.log("ERRORS SEND: ", errors);
+	}
+
+	successSendHandler (msg) {
+		console.log("SUCCESS: ", msg);
+	}
+
+	handleSend (msg) {
+		// event.preventDefault();
 
 		const jsonData = {
-			message : event.target.elements[0].value,
-			channelId : "mychat",
+			message : msg.data.text,
+			channelId : "dummy", // Its replaced on server but required field.
 			senderId : this.props.loggedIn.id,
 			senderUsername : this.props.loggedIn.username,
-			receiverId : "5e35c1701dc6010fac896bd9",
+			receiverId : this.props.tabProps.chatReceiverId,
 			messageDateTime : new Date()
-		}
-		postChatMessage(jsonData);
-		console.log(event.target.elements[0].value)
-		console.log("sending");
+		};
+
+		postChatMessage(jsonData)
+			.then(r => r.status !== 200
+				? r.json().then(this.errorSendHandler.bind(this))
+				: r.json().then(this.successSendHandler.bind(this)))
+			.catch(reason => console.log(reason));
 	}
+
+	handleNewUserMessage (msg) {
+		console.log(msg);
+		this.handleSend(msg);
+	}
+
 	render() {
 		return (
-			<ChatPreviewerView {...this.state}
-							   {...this.props}
-				handleSend = {this.handleSend.bind(this)}
+			<ChatPreviewerView
+				{...this.state}
+				{...this.props}
+
+				handleSend={this.handleSend.bind(this)}
+			   	onMessageWasSent={this.handleNewUserMessage.bind(this)}
 			/>
 		);
 	}
