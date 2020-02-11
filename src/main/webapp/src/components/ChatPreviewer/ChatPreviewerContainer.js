@@ -6,21 +6,23 @@ import "../../css/chat.css";
 import "../../css/forum.css";
 import {getUserById} from "../../api/UsersFetchAPI";
 
+const DEFAULT_MSG = {
+	author: 'me',
+	type: 'text',
+	data: {
+		text: 'ME some text'
+	}
+};
+
+const DEFAULT_RCV_MSG = {
+	author: 'them',
+	type: 'text',
+	data: {
+		text: 'THEM some text'
+	}
+};
+
 export class ChatPreviewerContainer extends Component {
-	static DEFAULT_MSG = {
-		author: 'me',
-		type: 'text',
-		data: {
-			text: 'ME some text'
-		}
-	};
-	static DEFAULT_RCV_MSG = {
-		author: 'them',
-		type: 'text',
-		data: {
-			text: 'THEM some text'
-		}
-	};
 
 	constructor (props) {
 		super(props);
@@ -72,7 +74,7 @@ export class ChatPreviewerContainer extends Component {
 		if (msg.senderId === this.props.loggedIn.id) {
 			message = {
 				...msg,
-				...ChatPreviewerContainer.DEFAULT_MSG,
+				...DEFAULT_MSG,
 				data: {
 					text: msg.message,
 				},
@@ -80,7 +82,7 @@ export class ChatPreviewerContainer extends Component {
 		} else {
 			message = {
 				...msg,
-				...ChatPreviewerContainer.DEFAULT_RCV_MSG,
+				...DEFAULT_RCV_MSG,
 				data: {
 					text: msg.message,
 				},
