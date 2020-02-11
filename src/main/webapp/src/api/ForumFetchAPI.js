@@ -11,7 +11,7 @@ export const getAllForumPages = () => {
 /**
  * Method which subscribes to the endpoint which streams all the bids to given offer
  * @param topic - topic to search by
- * @returns {[Forum]} - returns Array of forums
+ * @returns {Promise<Response>} - returns Array of forums
  */
 export const getPostsForTopic = (topic) => {
     return fetch(FORUM.GET_FORUMS + topic);
@@ -19,15 +19,13 @@ export const getPostsForTopic = (topic) => {
 
 /**
  * Method that calls post forum end point to create a new post on a topic
- * @param chatMessage - bid to be submitted
  * @returns {Promise<Response>} - returns a promise for further manipulations
+ * @param topic
+ * @param postMessage
  */
 export const postPostForTopic = (topic, postMessage) => {
     console.log(postMessage);
-    const dateStr = convertToString(postMessage.messageDateTime);
-    postMessage.messageDateTime = dateStr;
-    postMessage.id = makeid(5);
-    return fetch(FORUM.POST_POST_ON_FORUM_BY_TOPIC + topic, {
+    return fetch(`${FORUM.POST_POST_ON_FORUM_BY_TOPIC}${topic}`, {
         method: 'POST',
         headers: {
             // 'Accept': '*/*',
@@ -35,6 +33,18 @@ export const postPostForTopic = (topic, postMessage) => {
         },
 
         body: JSON.stringify(postMessage),
+    });
+};
+
+export const updatePostInTopic = (topic, postId, postData) => {
+    return fetch(`${FORUM.POST_POST_ON_FORUM_BY_TOPIC}${topic}/${postId}`, {
+        method: 'PUT',
+        headers: {
+            // 'Accept': '*/*',
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify(postData),
     });
 };
 
@@ -46,7 +56,7 @@ let makeid = function(length) {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
- }
+ };
  
 
 let convertToString = function(date) {
@@ -56,4 +66,4 @@ let convertToString = function(date) {
     + (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":"
     + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ":"
     + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds());
-}
+};

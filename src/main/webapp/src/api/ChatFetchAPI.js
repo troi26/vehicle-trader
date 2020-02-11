@@ -8,6 +8,15 @@ import { CHATS } from "./Endpoints";
 export const getChatsOnChannel = (channelId) => {
     return new EventSource(`${CHATS.GET_CHATS_BY_CHANNEL}${channelId}`);
 };
+/**
+ * Method which subscribes to the endpoint which streams all the bids to given offer
+ * @returns {EventSource} - returns the subscription object
+ * @param senderId
+ * @param receiverId
+ */
+export const getChatsOnChannelIds = (senderId, receiverId) => {
+    return new EventSource(`${CHATS.GET_CHATS_BY_CHANNEL}/${senderId}/${receiverId}`);
+};
 
 /**
  * Method that calls post bid end point to create a new bid

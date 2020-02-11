@@ -6,7 +6,7 @@ export const BIDS = {
 
 // Chat endpoints
 export const CHATS = {
-    GET_CHATS_BY_CHANNEL: "http://localhost:8080/api/chat/channel/",
+    GET_CHATS_BY_CHANNEL: "http://localhost:8080/api/chat/channel",
     POST_CHAT_ON_CHANNEL: "http://localhost:8080/api/chat",
 };
 
@@ -14,7 +14,14 @@ export const CHATS = {
 export const FORUM = {
     GET_FORUMS: "http://localhost:8080/api/forum/",
     GET_FORUM_POSTS_BY_TOPIC: "http://localhost:8080/api/forum/",
-    POST_POST_ON_FORUM_BY_TOPIC: "http://localhost:8080/api/forum/"
+    POST_POST_ON_FORUM_BY_TOPIC: "http://localhost:8080/api/forum/",
+};
+
+// Rating endpoints
+export const RATING = {
+    GET_USER_OVERALL_RATING: "http://localhost:8080/api/ratings/average/",
+    GET_RATING_BY_GRADER_AND_EV: "http://localhost:8080/api/ratings/",
+    POST_RATING: "http://localhost:8080/api/ratings",
 };
 
 // Offers endpoints
