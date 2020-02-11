@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Post {
     @Id
-    @NonNull
-    @NotNull
     @Size(min=1)
     String id;
 
@@ -35,8 +33,8 @@ public class Post {
     @Size(min=1)
     String message;
 
-    @NonNull
-    @NotNull
+//    @NonNull
+//    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime messageDateTime;
 }
