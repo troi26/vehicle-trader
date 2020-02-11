@@ -27,6 +27,12 @@ public class RatingController {
         return ratingService.findByEvaluatedUserId(userId);
     }
 
+    @GetMapping("/{evaluatedId}/{userId}")
+    public List<Rating> getRatingByEvaluatedUserId(@PathVariable("evaluatedId") String evaluatedId,
+                                                   @PathVariable("userId") String userId) {
+        return ratingService.findByEvaluatedUserIdAndGraderUserId(evaluatedId, userId);
+    }
+
     @GetMapping("/average/{userId}")
     public Double getMeanRatingByUserId(@PathVariable("userId") String userId) {
         return ratingService.getMeanGrade(userId);
@@ -38,7 +44,7 @@ public class RatingController {
     }
 
     @PostMapping
-    public Rating insertRating(@Valid @RequestBody Rating rating){
+    public Rating insertRating(@RequestBody Rating rating){
         return ratingService.create(rating);
     }
 

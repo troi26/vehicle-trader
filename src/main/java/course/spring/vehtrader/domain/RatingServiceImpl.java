@@ -51,8 +51,13 @@ public class RatingServiceImpl implements RatingService {
 //                .collect(Collectors.toList())
 //                .isEmpty()
 //                ? ratingRepository.insert(rating) : null;
-        return ratingRepository.findByEvaluatedUserIdAndGraderUserId(rating.getEvaluatedUserId(), rating.getGraderUserId()).isEmpty()
-                ? ratingRepository.insert(rating) : null;
+        List<Rating> old = ratingRepository.findByEvaluatedUserIdAndGraderUserId(rating.getEvaluatedUserId(),
+                rating.getGraderUserId());
+        if (old.isEmpty()) {
+            return ratingRepository.insert(rating);
+        }
+
+        return ratingRepository.save(rating);
     }
 
     @Override
@@ -82,7 +87,9 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Double getMeanGrade(String evaluatedUserId) {
-        return findByEvaluatedUserId(evaluatedUserId).stream().mapToDouble(Rating::getNumStars).average().orElse(Double.NaN);
+        List<Rating> evals = findByEvaluatedUserId(evaluatedUserId);
+        return evals.stream()
+                .mapToDouble(Rating::getNumStars).average().orElse(Double.NaN);
     }
 
     @Override
